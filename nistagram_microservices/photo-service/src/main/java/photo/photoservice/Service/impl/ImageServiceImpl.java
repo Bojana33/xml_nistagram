@@ -1,4 +1,8 @@
 package photo.photoservice.Service.impl;
 
-public class ImageServiceImpl {
+import org.springframework.stereotype.Service;
+import photo.photoservice.Service.ImageService;
+
+@Service
+public class ImageServiceImpl extends ImageService {
 }
