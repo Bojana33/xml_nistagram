@@ -6,9 +6,10 @@ import photo.photoservice.Repository.AlbumRepository;
 import photo.photoservice.Service.AlbumService;
 
 @Service
-public class AlbumServiceImpl extends AlbumService {
+public class AlbumServiceImpl implements AlbumService {
     private AlbumRepository albumRepository;
 
     @Autowired
+    public AlbumServiceImpl(AlbumRepository albumRepository){this.albumRepository = albumRepository;}
 
 }
