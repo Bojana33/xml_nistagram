@@ -8,6 +8,8 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -37,4 +39,9 @@ public class Profile implements Serializable {
 
     @OneToOne
     private ProfileDetails profileDetails;
+
+    @ManyToMany
+    @JoinTable(name="BlockedProfiles", joinColumns = @JoinColumn(name="ProfileId",referencedColumnName = "id"),
+                inverseJoinColumns = @JoinColumn(name = "BlockedProfileId", referencedColumnName = "id"))
+    private Set<Profile> blockedProfiles = new HashSet<>();
 }

@@ -7,6 +7,8 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -27,5 +29,8 @@ public class ProfileDetails implements Serializable {
 
     @Column
     private Boolean deactivated;
+
+    @ManyToMany(mappedBy = "")
+    private Set<Profile> blockedUsers = new HashSet<>();
 
 }
