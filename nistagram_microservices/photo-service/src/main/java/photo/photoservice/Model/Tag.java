@@ -21,6 +21,9 @@ public class Tag implements Serializable {
     private Long id;
 
     @Column
+    private String name;
+
+    @Column
     private String username;
 
     @Column
@@ -28,4 +31,8 @@ public class Tag implements Serializable {
 
     @ManyToMany(mappedBy= "taggedImages")
     Set<Image> tagged;
+
+    public String getName() {
+        return name;
+    }
 }
