@@ -37,7 +37,7 @@ public class Image implements Serializable {
     @JoinTable(
             name="tagged_images",
             joinColumns=@JoinColumn(name = "image_id"),
-            inverseJoinColumns=@JoinColumn(name = "image_id")
+            inverseJoinColumns=@JoinColumn(name = "tag_id")
     )
     Set<Image> taggedImages;
 
