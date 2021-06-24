@@ -8,3 +8,4 @@ public class PostController {
     @Autowired
     public PostService postService;
 }
+
