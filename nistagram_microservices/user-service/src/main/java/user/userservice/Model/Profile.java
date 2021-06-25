@@ -37,11 +37,17 @@ public class Profile implements Serializable {
     @Column
     private String website;
 
-    @OneToOne
-    private ProfileDetails profileDetails;
+    @Column
+    private Boolean verified;
+
+    @Column
+    private Boolean privateProfile;
+
+    @Column
+    private Boolean deactivated;
 
     @ManyToMany
     @JoinTable(name="BlockedProfiles", joinColumns = @JoinColumn(name="ProfileId",referencedColumnName = "id"),
-                inverseJoinColumns = @JoinColumn(name = "BlockedProfileId", referencedColumnName = "id"))
+            inverseJoinColumns = @JoinColumn(name = "BlockedProfileId", referencedColumnName = "id"))
     private Set<Profile> blockedProfiles = new HashSet<>();
 }

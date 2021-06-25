@@ -14,4 +14,5 @@ public interface ProfileRepository extends JpaRepository<Profile,Long> {
 
     @Override
     Profile getById(Long aLong);
+
 }

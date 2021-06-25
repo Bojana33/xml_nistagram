@@ -34,11 +34,13 @@ public class ProfileServiceImpl implements ProfileService {
             throw new Exception("Profile doesn't exist");
         }
         profileToUpdate.setProfilePicture(profile.getProfilePicture());
-        profileToUpdate.setProfileDetails(profile.getProfileDetails());
         profileToUpdate.setBiography(profile.getBiography());
         profileToUpdate.setBirthday(profile.getBirthday());
         profileToUpdate.setDisplayName(profile.getDisplayName());
         profileToUpdate.setWebsite(profile.getWebsite());
+        profileToUpdate.setVerified(profile.getVerified());
+        profileToUpdate.setPrivateProfile(profile.getPrivateProfile());
+        profileToUpdate.setDeactivated(profile.getDeactivated());
 
         this.profileRepository.save(profileToUpdate);
 
