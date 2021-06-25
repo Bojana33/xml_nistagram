@@ -1,12 +1,16 @@
 package post.postservice.Model;
 
+import lombok.AllArgsConstructor;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
+@AllArgsConstructor
 public class UserInfo implements Serializable {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long userId;
 
     @Column
@@ -14,4 +18,8 @@ public class UserInfo implements Serializable {
 
     @Column
     private String profilePicture;
+
+    public UserInfo() {
+
+    }
 }

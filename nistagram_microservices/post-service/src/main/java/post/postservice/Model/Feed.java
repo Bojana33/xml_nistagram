@@ -7,5 +7,6 @@ import java.io.Serializable;
 public class Feed implements Serializable {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 }
