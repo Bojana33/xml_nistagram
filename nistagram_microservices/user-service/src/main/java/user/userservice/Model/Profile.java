@@ -50,4 +50,8 @@ public class Profile implements Serializable {
     @JoinTable(name="BlockedProfiles", joinColumns = @JoinColumn(name="ProfileId",referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "BlockedProfileId", referencedColumnName = "id"))
     private Set<Profile> blockedProfiles = new HashSet<>();
+
+    public Boolean getPrivateProfile() {
+        return privateProfile;
+    }
 }

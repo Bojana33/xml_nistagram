@@ -1,5 +1,6 @@
 package user.userservice.Service.impl;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import user.userservice.Model.Profile;
@@ -7,7 +8,9 @@ import user.userservice.Repository.ProfileRepository;
 import user.userservice.Service.ProfileService;
 
 import java.util.List;
+import java.util.Optional;
 
+@Slf4j
 @Service
 public class ProfileServiceImpl implements ProfileService {
 
@@ -62,5 +65,10 @@ public class ProfileServiceImpl implements ProfileService {
     public List<Profile> findAll() {
         List<Profile> allProfiles = this.profileRepository.findAll();
         return allProfiles;
+    }
+
+    public Optional<Profile> findByUsername(String username) {
+        log.info("retrieving user {}", username);
+        return profileRepository.findByUsername(username);
     }
 }
