@@ -1,25 +1,20 @@
 package graph.graphservice.Service;
 
-import graph.graphservice.Model.NodeDegree;
-import graph.graphservice.Model.Users;
-import org.springframework.stereotype.Service;
+import graph.graphservice.Model.User;
 
-import java.util.List;
-
-@Service
 public interface UserService {
 
-    public Users follow(Users follower, Users following);
+    public User follow(User follower, User following);
 
-    public Users addUser(Users user);
+    //public User addUser(User user);
 
-    public NodeDegree findNodeDegree(String username);
-
-    public boolean isFollowing(String userA, String userb);
-
-    public List<Users> findFollowers(String username);
-
-    public List<Users> findFollowing(String username);
+//    public NodeDegree findNodeDegree(String username);
+//
+//    public boolean isFollowing(String userA, String userb);
+//
+//    public List<User> findFollowers(String username);
+//
+//    public List<User> findFollowing(String username);
 
 
 

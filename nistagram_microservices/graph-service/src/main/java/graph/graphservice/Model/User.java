@@ -2,19 +2,21 @@ package graph.graphservice.Model;
 
 import lombok.Builder;
 import lombok.Data;
-import org.neo4j.ogm.annotation.NodeEntity;
 import org.springframework.data.neo4j.core.schema.Relationship;
-import javax.persistence.*;
 
-import java.io.Serializable;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.util.Set;
 
 @Data
-@NodeEntity
+//@NodeEntity
 @Builder
-public class Users implements Serializable {
+@Table(name = "users")
+public class User {
 
     @Id
+    @org.springframework.data.neo4j.core.schema.Id
     @GeneratedValue
     private Long id;
     private String userId;
