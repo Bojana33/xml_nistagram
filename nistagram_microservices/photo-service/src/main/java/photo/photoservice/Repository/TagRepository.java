@@ -9,5 +9,5 @@ import java.util.List;
 @Repository
 public interface TagRepository extends JpaRepository<Tag, Long> {
 
-    List<Tag> findByName(List<String> names);
+    List<Tag> findByName(String name);
 }

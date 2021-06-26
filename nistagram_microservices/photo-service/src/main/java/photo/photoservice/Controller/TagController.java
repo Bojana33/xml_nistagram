@@ -19,8 +19,8 @@ public class TagController {
     private TagService tagService;
 
     @PostMapping("/findByName")
-    public ResponseEntity<?> findByName(@PathVariable("name") List<String> names) {
-        List<Tag> tags = tagService.findByName(names);
+    public ResponseEntity<?> findByName(@PathVariable("name") String name) {
+        List<Tag> tags = tagService.findByName(name);
         return ResponseEntity.ok(tags);
     }
 

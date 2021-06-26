@@ -15,7 +15,7 @@ public class TagServiceImpl implements TagService {
     @Autowired
     public TagServiceImpl(TagRepository tagRepository){this.tagRepository=tagRepository;}
 
-    public List<Tag> findByName(List<String> names) {
-        return tagRepository.findByName(names);
+    public List<Tag> findByName(String name) {
+        return tagRepository.findByName(name);
     }
 }
