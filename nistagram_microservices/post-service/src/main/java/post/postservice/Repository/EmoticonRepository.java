@@ -12,6 +12,7 @@ import java.util.List;
 public interface EmoticonRepository extends JpaRepository<Emoticon, EmoticonType> {
 
     List<Post> getByLike(EmoticonType emoticonType);
+    
 
     List<Post> getByDislike(EmoticonType emoticonType);
 }
