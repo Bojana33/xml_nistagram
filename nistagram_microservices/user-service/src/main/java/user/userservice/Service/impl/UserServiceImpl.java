@@ -19,7 +19,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User create(User user) throws Exception {
         if(user.getId() != null){
-            throw new Exception("User with that Id already exist");
+            throw new Exception("User with this Id already exist");
         }
         this.userRepository.save(user);
         return user;
