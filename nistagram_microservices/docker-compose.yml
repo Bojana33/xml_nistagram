@@ -1,0 +1,49 @@
+version: '3.9'
+
+services:
+    user-service:
+      build: ./user-service
+      image: user_service_image
+      container_name: userServiceContainer
+      hostname: user-service
+      networks:
+        service-discovery-network:
+          aliases:
+            - user-service
+      environment:
+          DATABASE_USERNAME: ${DATABASE_USERNAME}
+          DATABASE_PASSWORD: ${DATABASE_PASSWORD}
+          DATABASE_DOMAIN: ${DATABASE_DOMAIN}
+          DATABASE_SCHEME: ${DATABASE_SCHEME}
+      volumes:
+        - $HOME/.m2:/root/.m2
+      depends_on:
+        - database
+
+    database:
+      image: postgres
+      container_name: postgre_db
+      restart: always
+      networks:
+        service-discovery-network:
+          aliases:
+            - database
+      environment:
+              POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+              POSTGRES_DATABASE: ${POSTGRES_DATABASE}
+              POSTGRES_USERNAME: ${POSTGRES_USERNAME}
+
+      ports:
+        - 5432:5432
+      volumes:
+        - database-data:/var/lib/postgres
+
+volumes:
+  database-data:
+
+networks:
+  service-discovery-network:
+    name: service-discovery-network
+    driver: bridge
+
+
