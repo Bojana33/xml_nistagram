@@ -22,18 +22,6 @@
 	<dependencies>
 
 		<dependency>
-			<groupId>org.neo4j</groupId>
-			<artifactId>neo4j</artifactId>
-			<version>4.2.7</version>
-			<scope>runtime</scope>
-		</dependency>
-
-<!--		<dependency>-->
-<!--			<groupId>org.springframework.boot</groupId>-->
-<!--			<artifactId>spring-boot-starter-data-neo4j</artifactId>-->
-<!--		</dependency>-->
-
-		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-amqp</artifactId>
 		</dependency>
@@ -69,24 +57,19 @@
 			<artifactId>postgresql</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>org.aspectj</groupId>
 			<artifactId>aspectjweaver</artifactId>
 			<version>1.9.4</version>
 		</dependency>
-<!--		<dependency>-->
-<!--			<groupId>graph</groupId>-->
-<!--			<artifactId>graph-service</artifactId>-->
-<!--			<version>0.0.1-SNAPSHOT</version>-->
-<!--		</dependency>-->
-<!--        <dependency>-->
-<!--            <groupId>user</groupId>-->
-<!--            <artifactId>user-service</artifactId>-->
-<!--            <version>0.0.1-SNAPSHOT</version>-->
-<!--        </dependency>-->
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-neo4j</artifactId>
+		</dependency>
+
     </dependencies>
 
 	<build>
@@ -97,18 +80,5 @@
 			</plugin>
 		</plugins>
 	</build>
-
-	<repositories>
-		<repository>
-			<id>neo4j</id>
-			<url>file://</url>
-			<!-- ie <url>file:///home/neo4j/maven/remoterepo</url> -->
-		</repository>
-		<repository>
-			<id>neo4j-enterprise</id>
-			<url>file://</url>
-			<!-- ie <url>file:///home/neo4j/maven/remoterepoenterprise</url> -->
-		</repository>
-	</repositories>
 
 </project>
