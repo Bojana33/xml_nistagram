@@ -65,7 +65,6 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 		</plugins>
-		<finalName>docker-photo-service</finalName>
 	</build>
 
 </project>

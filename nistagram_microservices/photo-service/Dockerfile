@@ -6,5 +6,5 @@ RUN mvn package -DskipTests
 FROM openjdk:8-jdk-alpine
 WORKDIR /app
 COPY --from=mavenService /usr/src/server/target/photo-service-0.0.1-SNAPSHOT.jar ./
-EXPOSE 8089
+EXPOSE 8087
 CMD java -jar photo-service-0.0.1-SNAPSHOT.jar

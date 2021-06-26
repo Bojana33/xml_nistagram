@@ -61,6 +61,27 @@ services:
       ports:
         - 8088:8088
 
+    photo-service:
+      build: ./photo-service
+      image: photo_service_image
+      container_name: photoServiceContainer
+      hostname: photo-service
+      networks:
+        service-discovery-network:
+          aliases:
+            - photo-service
+      environment:
+        DATABASE_USERNAME: postgres
+        DATABASE_PASSWORD: bojana
+        DATABASE_DOMAIN: database
+        DATABASE_SCHEME: ${DATABASE_SCHEME}
+      volumes:
+        - $HOME/.m2:/root/.m2
+      depends_on:
+        - database
+      ports:
+        - 8087:8087
+
 volumes:
   database-data:
 
