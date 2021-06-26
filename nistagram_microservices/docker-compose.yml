@@ -10,9 +10,9 @@ services:
           aliases:
             - database
       environment:
-              POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+              POSTGRES_PASSWORD: bojana
               POSTGRES_DATABASE: ${POSTGRES_DATABASE}
-              POSTGRES_USERNAME: ${POSTGRES_USERNAME}
+              POSTGRES_USERNAME: postgres
 
       ports:
         - 5432:5432
