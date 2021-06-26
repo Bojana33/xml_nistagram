@@ -1,6 +1,6 @@
 package graph.graphservice.Repository;
 
-import graph.graphservice.Model.User;
+import graph.graphservice.Model.Users;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
@@ -11,10 +11,10 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface UserRepository extends Neo4jRepository<User, Long> {
+public interface UserRepository extends Neo4jRepository<Users, Long> {
 
-    Optional<User> findByUserId(String userId);
-    Optional<User> findByUsername(String username);
+    Optional<Users> findByUserId(String userId);
+    Optional<Users> findByUsername(String username);
 
 
     @Query("MATCH (n)-[r]->() where n.username={0} RETURN COUNT(r)")
@@ -27,12 +27,12 @@ public interface UserRepository extends Neo4jRepository<User, Long> {
     boolean isFollowing(String userA, String userB);
 
     @Query("MATCH (n:User{username:{0}})<--(f:User) Return f")
-    List<User> findFollowers(String username);
+    List<Users> findFollowers(String username);
 
     @Query(value = "MATCH (n:User{username:{0}})<--(f:User) Return f",
             countQuery = "MATCH (n:User{username:{0}})<--(f:User) Return count(f)")
-    Page<User> findFollowers(String username, Pageable pageable);
+    Page<Users> findFollowers(String username, Pageable pageable);
 
     @Query("MATCH (n:User{username:{0}})-->(f:User) Return f")
-    List<User> findFollowing(String username);
+    List<Users> findFollowing(String username);
 }

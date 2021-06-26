@@ -3,7 +3,7 @@ package graph.graphservice.Service.impl;
 import graph.graphservice.Exception.UsernameAlreadyExistsException;
 import graph.graphservice.Model.Friendship;
 import graph.graphservice.Model.NodeDegree;
-import graph.graphservice.Model.User;
+import graph.graphservice.Model.Users;
 import graph.graphservice.Repository.UserRepository;
 import graph.graphservice.Service.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -22,7 +22,7 @@ public class UserServiceImpl implements UserService {
     }
 
 
-    public User addUser(User user) {
+    public Users addUser(Users user) {
 
         if(userRepository.findByUsername(user.getUsername()).isPresent()) {
             String message = String.format("username %s already exists", user.getUsername());
@@ -31,7 +31,7 @@ public class UserServiceImpl implements UserService {
             throw new UsernameAlreadyExistsException(message);
         }
 
-        User saveUser = userRepository.save(user);
+        Users saveUser = userRepository.save(user);
 
         log.info("user {} save successfully", saveUser.getUsername());
 
@@ -40,18 +40,18 @@ public class UserServiceImpl implements UserService {
 
 
     @Transactional
-    public User follow(User follower, User following) {
+    public Users follow(Users follower, Users following) {
         log.info("user {} will follow {}",
               follower.getUsername(), following.getUsername());
 
-        User savedFollower = userRepository
+        Users savedFollower = userRepository
                 .findByUserId(follower.getUserId())
                 .orElseGet(() -> {
                     //log.info("user {} not exists, creating it", follower.getUsername());
                     return this.addUser(follower);
                 });
 
-        User savedFollowing = userRepository
+        Users savedFollowing = userRepository
                 .findByUserId(following.getUserId())
                 .orElseGet(() -> {
                     //log.info("user {} not exits, creating it", following.getUsername());
@@ -91,15 +91,15 @@ public class UserServiceImpl implements UserService {
         return userRepository.isFollowing(userA, userb);
     }
 
-    public List<User> findFollowers(String username) {
-        List<User> followers = userRepository.findFollowers(username);
+    public List<Users> findFollowers(String username) {
+        List<Users> followers = userRepository.findFollowers(username);
         log.info("found {} followers for user {}", followers.size(), username);
 
         return followers;
     }
 
-    public List<User> findFollowing(String username) {
-        List<User> following = userRepository.findFollowing(username);
+    public List<Users> findFollowing(String username) {
+        List<Users> following = userRepository.findFollowing(username);
         log.info("found {} that user {} is following", following.size(), username);
 
         return following;

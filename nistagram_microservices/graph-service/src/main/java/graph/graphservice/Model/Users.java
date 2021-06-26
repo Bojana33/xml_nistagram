@@ -1,18 +1,18 @@
 package graph.graphservice.Model;
 
-import jdk.jfr.Relational;
 import lombok.Builder;
 import lombok.Data;
+import org.neo4j.ogm.annotation.NodeEntity;
 import org.springframework.data.neo4j.core.schema.Relationship;
-
 import javax.persistence.*;
 
+import java.io.Serializable;
 import java.util.Set;
 
 @Data
-@Entity
+@NodeEntity
 @Builder
-public class User {
+public class Users implements Serializable {
 
     @Id
     @GeneratedValue

@@ -1,6 +1,6 @@
 package graph.graphservice.Controller;
 
-import graph.graphservice.Model.User;
+import graph.graphservice.Model.Users;
 import graph.graphservice.Playload.FollowRequest;
 import graph.graphservice.Service.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -24,14 +24,14 @@ public class UserController {
 
 
         userService.follow(
-                User.builder()
+                Users.builder()
                         .userId(request.getFollower().getId())
                         .username(request.getFollower().getUsername())
                         .name(request.getFollower().getName())
                         .profilePic(request.getFollower().getProfilePicture())
                         .build(),
 
-                User.builder()
+                Users.builder()
                         .userId(request.getFollowing().getId())
                         .username(request.getFollowing().getUsername())
                         .name(request.getFollowing().getName())
