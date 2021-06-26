@@ -6,5 +6,5 @@ RUN mvn package -DskipTests
 FROM openjdk:8-jdk-alpine
 WORKDIR /app
 COPY --from=mavenService /usr/src/server/target/graph-service-0.0.1-SNAPSHOT.jar ./
-EXPOSE 8089
+EXPOSE 8084
 CMD java -jar graph-service-0.0.1-SNAPSHOT.jar
