@@ -10,7 +10,7 @@ public interface PostService {
 
     Post update(Post post) throws Exception;
 
-    void delete(Long id, String username) throws Exception;
+    void delete(Long id);
 
     List<Post> postsByUsername(String username);
 
