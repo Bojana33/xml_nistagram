@@ -37,11 +37,9 @@ public class PostServiceImpl implements PostService {
 
         return postToUpdate;
     }
-
     public void delete(Long id, String username) throws Exception {
         Post post = this.postRepository.getById(id);
-        if (post.getUsername() != username)
-        {
+        if (post.getUsername() != username) {
             throw new Exception("You can't delete this post.");
         }
         if (post == null) {

@@ -11,5 +11,8 @@ import java.util.List;
 public interface PostRepository extends JpaRepository<Post, Long> {
     List<Post> findByUsernameOrderByCreatedAtDesc(String username);
     List<Post> findByIdInOrderByCreatedAtDesc(List<Long> ids);
+
+
+    void delete(Long id);
 }
 
