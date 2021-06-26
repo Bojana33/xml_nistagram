@@ -32,9 +32,8 @@ public class PostController {
 
     @DeleteMapping("/delete/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable("id") Long id, @RequestHeader(value = "username") String username) throws Exception {
-
-        postService.delete(id, username);
+    public void delete(@PathVariable("id") Long id){
+        postService.delete(id);
     }
 
     @GetMapping("/posts/{username}")

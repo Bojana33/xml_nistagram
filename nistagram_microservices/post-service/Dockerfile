@@ -5,6 +5,6 @@ RUN mvn package -DskipTests
 
 FROM openjdk:8-jdk-alpine
 WORKDIR /app
-COPY --from=mavenService /usr/src/server/target/user-service-0.0.1-SNAPSHOT.jar ./
+COPY --from=mavenService /usr/src/server/target/post-service-0.0.1-SNAPSHOT.jar ./
 EXPOSE 8089
 CMD java -jar post-service-0.0.1-SNAPSHOT.jar
