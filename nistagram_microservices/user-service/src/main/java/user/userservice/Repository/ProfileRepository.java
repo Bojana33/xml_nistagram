@@ -17,6 +17,6 @@ public interface ProfileRepository extends JpaRepository<Profile,Long> {
     @Override
     Profile getById(Long aLong);
 
-    Optional<Profile> findByUsername(String username);
+    Optional<Profile> findByDisplayName(String displayname);
 
 }

@@ -18,13 +18,13 @@ public class ProfileController {
     @Autowired
     private ProfileService profileService;
 
-    @GetMapping(value = "/users/{username}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> findProfile(@PathVariable("username") String username) {
-        log.info("retrieving user {}", username);
+    @GetMapping(value = "/users/{displayname}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> findProfile(@PathVariable("displayname") String displayname) {
+        log.info("retrieving user {}", displayname);
 
         return  profileService
-                .findByUsername(username)
+                .findByDisplayName(displayname)
                 .map(user -> ResponseEntity.ok(user))
-                .orElseThrow(() -> new ResourceNotFoundException(username));
+                .orElseThrow(() -> new ResourceNotFoundException(displayname));
     }
 }

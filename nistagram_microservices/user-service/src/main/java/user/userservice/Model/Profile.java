@@ -16,6 +16,8 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "VerifiedProfile", discriminatorType = DiscriminatorType.STRING)
 public class Profile implements Serializable {
 
     @Id
@@ -46,12 +48,12 @@ public class Profile implements Serializable {
     @Column
     private Boolean deactivated;
 
+    @OneToOne
+    private User user;
+
     @ManyToMany
     @JoinTable(name="BlockedProfiles", joinColumns = @JoinColumn(name="ProfileId",referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "BlockedProfileId", referencedColumnName = "id"))
     private Set<Profile> blockedProfiles = new HashSet<>();
 
-    public Boolean getPrivateProfile() {
-        return privateProfile;
-    }
 }

@@ -67,8 +67,8 @@ public class ProfileServiceImpl implements ProfileService {
         return allProfiles;
     }
 
-    public Optional<Profile> findByUsername(String username) {
-        log.info("retrieving user {}", username);
-        return profileRepository.findByUsername(username);
+    public Optional<Profile> findByDisplayName(String displayname) {
+        log.info("retrieving user {}", displayname);
+        return profileRepository.findByDisplayName(displayname);
     }
 }
