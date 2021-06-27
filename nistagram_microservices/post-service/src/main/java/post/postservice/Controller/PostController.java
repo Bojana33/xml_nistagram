@@ -2,7 +2,10 @@ package post.postservice.Controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.multipart.MultipartFile;
@@ -15,44 +18,35 @@ import java.util.Base64;
 import java.util.Date;
 import java.util.List;
 
-@RestController
+@Controller
 @RequestMapping(value = "/post")
 public class PostController {
 
+
+    private PostService postService;
+
     @Autowired
-    public PostService postService;
-    /*@PostMapping()
-    public ResponseEntity<?> createPost(@RequestBody , @RequestHeader(value= "username") String username) throws Exception {
-        Post newPost = postService.create();
+    public PostController(PostService postService) {
+        this.postService = postService;
+    }
 
-        return ResponseEntity.created();
-    }*/
-/*
-    @PostMapping()
-    public ResponseEntity<String> createModel(@RequestBody ModelDTO modelDTO, @RequestHeader("Username") String username){
-        logger.info("Admin {} je zatrazio kreiranje modela {} za brend{}. {}", username, modelDTO.getModelName(), modelDTO.getBrandName(), LocalDateTime.now());
-        return modelService.createModel(modelDTO.getBrandName(), modelDTO.getModelName(), username);
-    }*/
-    @PostMapping("")
-    public void createPost(MultipartFile file, String caption, String username) throws Exception {
-        Post p = new Post();
+    @PostMapping(value = "/upload")
+    public String createPost(@ModelAttribute Post post,
+                             @RequestParam("file") MultipartFile file,
+                             @RequestParam("caption") String caption,
+                             @RequestParam("username") String username)  {
+        postService.savePost(post, file, caption, username);
+        return "post.html";
+    }
 
-        String filename = StringUtils.cleanPath(file.getOriginalFilename());
-        if(filename.contains(".."))
-        {
-            System.out.println("Not a valid file");
-        }
-        try {
-            p.setImageUrl(Base64.getEncoder().encodeToString(file.getBytes()));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        p.setCaption(caption);
-        p.setUpdatedAt(new Date());
-        p.setCreatedAt(new Date());
-        p.setUsername(username);
-        postService.create(p);
-
+    @GetMapping("/save")
+    public String create(@ModelAttribute Post post,
+                         BindingResult errors, Model model) throws Exception {
+        Post postToSave = postService.create(post);
+        model.addAttribute("postToSave", postToSave);
+        postToSave.setUpdatedAt(new Date());
+        postToSave.setCreatedAt(new Date());
+        return "addpost.html";
     }
 
     @DeleteMapping("/delete/{id}")
