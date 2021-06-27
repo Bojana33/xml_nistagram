@@ -8,6 +8,8 @@ import user.userservice.Model.User;
 import user.userservice.Model.UserRole;
 import user.userservice.Service.UserService;
 
+import java.util.List;
+
 @RestController
 @RequestMapping(value = "/")
 public class UserController {
@@ -25,7 +27,7 @@ public class UserController {
         model.addAttribute("user", user);
         user.setRole(UserRole.USER);
         user.setActive(Boolean.TRUE);
-        return "registracija.html";
+        return "registracija";
     }
 
     @PostMapping(value = "/saveUser")
@@ -37,8 +39,15 @@ public class UserController {
         model.addAttribute("userToSave", userToSave);
         userToSave.setRole(UserRole.USER);
         userToSave.setActive(Boolean.TRUE);
-        return "home.html";
+        return "home";
     }
 
+    @GetMapping(value = "/users")
+    public String showUsers(Model model) {
+        List<User> users = this.userService.findAll();
+        model.addAttribute("users", users);
+        model.addAttribute("usr", new User());
+        return "users";
+    }
 
 }

@@ -2,6 +2,8 @@ package user.userservice.Service;
 
 import user.userservice.Model.User;
 
+import java.util.List;
+
 public interface UserService {
 
     User create(User user) throws Exception;
@@ -9,4 +11,5 @@ public interface UserService {
     void delete(Long id);
     User findOne(Long id);
     User findByUsername(String username);
+    List<User> findAll();
 }

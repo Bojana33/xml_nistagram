@@ -6,6 +6,8 @@ import user.userservice.Model.User;
 import user.userservice.Repository.UserRepository;
 import user.userservice.Service.UserService;
 
+import java.util.List;
+
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -62,5 +64,10 @@ public class UserServiceImpl implements UserService {
         User user = this.userRepository.findByUsername(username);
         return user;
 
+    }
+
+    @Override
+    public List<User> findAll() {
+        return this.userRepository.findAll();
     }
 }
