@@ -1,16 +1,20 @@
 package user.userservice.Controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import user.userservice.Model.User;
 import user.userservice.Model.UserRole;
 import user.userservice.Service.UserService;
 
 import java.util.List;
 
-@RestController
+@Controller
 @RequestMapping(value = "/")
 public class UserController {
 
@@ -27,7 +31,7 @@ public class UserController {
         model.addAttribute("user", user);
         user.setRole(UserRole.USER);
         user.setActive(Boolean.TRUE);
-        return "registracija";
+        return "registration";
     }
 
     @PostMapping(value = "/saveUser")
@@ -45,9 +49,17 @@ public class UserController {
     @GetMapping(value = "/users")
     public String showUsers(Model model) {
         List<User> users = this.userService.findAll();
-        model.addAttribute("users", users);
+        model.addAttribute("usrs", users);
         model.addAttribute("usr", new User());
         return "users";
+    }
+
+    @GetMapping
+    public String testiraj(Model model) {
+        Integer id = 111;
+        User user = this.userService.findOne(new Long(id));
+        model.addAttribute("message",user.getEmail());
+        return "test";
     }
 
 }
