@@ -6,7 +6,7 @@ public interface UserService {
 
     public User follow(User follower, User following);
 
-    //public User addUser(User user);
+    public User addUser(User user);
 
 //    public NodeDegree findNodeDegree(String username);
 //
