@@ -37,6 +37,7 @@ public class VerificationRequestServiceImpl implements VerificationRequestServic
         }
         requestToUpdate.setCategory(requestToUpdate.getCategory());
         requestToUpdate.setOfficialDocument(verificationRequest.getOfficialDocument());
+        requestToUpdate.setAccepted(verificationRequest.getAccepted());
         this.verificationRequestRepository.save(requestToUpdate);
 
         return requestToUpdate;
