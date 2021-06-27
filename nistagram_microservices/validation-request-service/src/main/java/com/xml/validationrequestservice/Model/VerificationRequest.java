@@ -26,4 +26,11 @@ public class VerificationRequest implements Serializable {
 
     private String officialDocument;
 
+    @Column
+    private Boolean accepted;
+
+    @ManyToOne(targetEntity = User.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "sender_id", nullable = false, referencedColumnName = "id")
+    private User sender;
+
 }
