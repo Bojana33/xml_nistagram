@@ -6,9 +6,7 @@ import graph.graphservice.Service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @Slf4j
@@ -54,24 +52,24 @@ public class UserController {
         return ResponseEntity.ok(new ApiResponse(true, message));
     }
 
-//    @GetMapping("/users/{username}/degree")
-//    public ResponseEntity<?> findNodeDegree(@PathVariable String username) {
-//        log.info("received request to get node degree for {}", username);
-//
-//        return ResponseEntity.ok(userService.findNodeDegree(username));
-//    }
-//
-//    @GetMapping("/users/{usernameA}/following/{usernameB}")
-//    public ResponseEntity<?> isFollwoing(@PathVariable String usernameA, @PathVariable String usernameB) {
-//        log.info("received request to check is user {} is following {}"
-//                , usernameA, usernameB);
-//
-//        return ResponseEntity.ok(userService.isFollowing(usernameA, usernameB));
-//    }
-//
-//    @GetMapping("/users/{username}/followers")
-//    public ResponseEntity<?> findFollowers(@PathVariable String username) {
-//        return ResponseEntity.ok(userService.findFollowers(username));
-//    }
+    @GetMapping("/users/{username}/degree")
+    public ResponseEntity<?> findNodeDegree(@PathVariable String username) {
+        log.info("received request to get node degree for {}", username);
+
+        return ResponseEntity.ok(userService.findNodeDegree(username));
+    }
+
+    @GetMapping("/users/{usernameA}/following/{usernameB}")
+    public ResponseEntity<?> isFollwoing(@PathVariable String usernameA, @PathVariable String usernameB) {
+        log.info("received request to check is user {} is following {}"
+                , usernameA, usernameB);
+
+        return ResponseEntity.ok(userService.isFollowing(usernameA, usernameB));
+    }
+
+    @GetMapping("/users/{username}/followers")
+    public ResponseEntity<?> findFollowers(@PathVariable String username) {
+        return ResponseEntity.ok(userService.findFollowers(username));
+    }
 }
 
