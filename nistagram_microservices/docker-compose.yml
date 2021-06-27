@@ -1,0 +1,93 @@
+version: '3.9'
+
+services:
+    database:
+      image: postgres
+      container_name: postgre_db
+      restart: always
+      networks:
+        service-discovery-network:
+          aliases:
+            - database
+      environment:
+              POSTGRES_PASSWORD: bojana
+              POSTGRES_DATABASE: ${POSTGRES_DATABASE}
+              POSTGRES_USERNAME: postgres
+
+      ports:
+        - 5432:5432
+      volumes:
+        - database-data:/var/lib/postgres
+
+    user-service:
+      build: ./user-service
+      image: user_service_image
+      container_name: userServiceContainer
+      hostname: user-service
+      networks:
+        service-discovery-network:
+          aliases:
+            - user-service
+      environment:
+        DATABASE_USERNAME: postgres
+        DATABASE_PASSWORD: bojana
+        DATABASE_DOMAIN: database
+        DATABASE_SCHEME: ${DATABASE_SCHEME}
+      volumes:
+        - $HOME/.m2:/root/.m2
+      depends_on:
+        - database
+      ports:
+        - 8089:8089
+
+    post-service:
+      build: ./post-service
+      image: post_service_image
+      container_name: postServiceContainer
+      hostname: post-service
+      networks:
+        service-discovery-network:
+          aliases:
+            - post-service
+      environment:
+        DATABASE_USERNAME: postgres
+        DATABASE_PASSWORD: bojana
+        DATABASE_DOMAIN: database
+        DATABASE_SCHEME: ${DATABASE_SCHEME}
+      volumes:
+        - $HOME/.m2:/root/.m2
+      depends_on:
+        - database
+      ports:
+        - 8088:8088
+
+    photo-service:
+      build: ./photo-service
+      image: photo_service_image
+      container_name: photoServiceContainer
+      hostname: photo-service
+      networks:
+        service-discovery-network:
+          aliases:
+            - photo-service
+      environment:
+        DATABASE_USERNAME: postgres
+        DATABASE_PASSWORD: bojana
+        DATABASE_DOMAIN: database
+        DATABASE_SCHEME: ${DATABASE_SCHEME}
+      volumes:
+        - $HOME/.m2:/root/.m2
+      depends_on:
+        - database
+      ports:
+        - 8087:8087
+
+volumes:
+  database-data:
+
+networks:
+  service-discovery-network:
+    name: service-discovery-network
+    driver: bridge
+
+
