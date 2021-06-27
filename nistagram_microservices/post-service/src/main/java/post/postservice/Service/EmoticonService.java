@@ -7,8 +7,8 @@ import java.util.List;
 
 public interface EmoticonService {
 
-    List<Post> findByLike(EmoticonType emoticonType) throws Exception;
+ /*   List<Post> findByLike(EmoticonType emoticonType) throws Exception;
 
-    List<Post> findByDislike(EmoticonType emoticonType) throws Exception;
+    List<Post> findByDislike(EmoticonType emoticonType) throws Exception;*/
 
 }

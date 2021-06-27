@@ -18,7 +18,7 @@ import java.util.Base64;
 import java.util.Date;
 import java.util.List;
 
-@Controller
+@RestController
 @RequestMapping(value = "/post")
 public class PostController {
 

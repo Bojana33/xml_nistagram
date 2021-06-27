@@ -16,7 +16,7 @@ public class EmoticonController {
     @Autowired
     private EmoticonService emoticonService;
 
-    @GetMapping("/likes")
+ /*   @GetMapping("/likes")
     public ResponseEntity<?> findByLike(@PathVariable("emoticonType") EmoticonType emoticonType) throws Exception{
         return new ResponseEntity<>(emoticonService.findByLike(emoticonType), HttpStatus.OK);
     }
@@ -24,5 +24,5 @@ public class EmoticonController {
     @GetMapping("/dislikes")
     public ResponseEntity<?> findByDislike(@PathVariable("emoticonType") EmoticonType emoticonType) throws Exception{
         return new ResponseEntity<>(emoticonService.findByDislike(emoticonType), HttpStatus.OK);
-    }
+    }*/
 }

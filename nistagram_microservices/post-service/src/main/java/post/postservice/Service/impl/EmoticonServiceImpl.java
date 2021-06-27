@@ -15,7 +15,7 @@ public class EmoticonServiceImpl implements EmoticonService {
     @Autowired
     private EmoticonRepository emoticonRepository;
 
-    public List<Post> findByLike(EmoticonType emoticonType) throws Exception{
+  /*  public List<Post> findByLike(EmoticonType emoticonType) throws Exception{
         List<Post> likedPosts = this.emoticonRepository.getByLike(emoticonType);
         if (emoticonType == emoticonType.LIKE) {
             return likedPosts;
@@ -36,6 +36,6 @@ public class EmoticonServiceImpl implements EmoticonService {
             throw new Exception("There are no disliked posts.");
         }
         return null;
-    }
+    }*/
 
 }
