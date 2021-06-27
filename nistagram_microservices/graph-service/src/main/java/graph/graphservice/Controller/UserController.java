@@ -13,9 +13,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Slf4j
 public class UserController {
+    
+    private UserService userService;
 
     @Autowired
-    private UserService userService;
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
     @PostMapping("/users/followers")
     public ResponseEntity<?> follow(@RequestBody FollowRequest request) {

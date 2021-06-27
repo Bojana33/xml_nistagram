@@ -70,7 +70,7 @@
 			<artifactId>spring-boot-starter-data-neo4j</artifactId>
 		</dependency>
 
-    </dependencies>
+	</dependencies>
 
 	<build>
 		<plugins>
