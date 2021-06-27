@@ -30,20 +30,17 @@ public class UserController {
         User user = new User();
         model.addAttribute("user", user);
         user.setRole(UserRole.USER);
-        user.setActive(Boolean.TRUE);
+        //user.setActive(Boolean.TRUE);
         return "registration";
     }
 
     @PostMapping(value = "/saveUser")
     public String createUser(@ModelAttribute User user, BindingResult errors, Model model) throws Exception{
-        if (this.userService.findByUsername(user.getUsername())!= null){
-            throw new Exception("User with this username already exist.");
-        }
-        User userToSave = userService.create(user);
-        model.addAttribute("userToSave", userToSave);
-        userToSave.setRole(UserRole.USER);
-        userToSave.setActive(Boolean.TRUE);
-        return "home";
+        model.addAttribute("userToSave", user);
+        user.setRole(UserRole.USER);
+        //user.setActive(Boolean.TRUE);
+        this.userService.create(user);
+        return "redirect:/users";
     }
 
     @GetMapping(value = "/users")
