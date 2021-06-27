@@ -2,6 +2,7 @@ package graph.graphservice.Model;
 
 import lombok.Builder;
 
+import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
@@ -14,8 +15,10 @@ public class Friendship {
     private Long id;
 
     //@StartNode
+    @Column
     private User startNode;
 
     //@EndNode
+    @Column
     private User endNode;
 }
