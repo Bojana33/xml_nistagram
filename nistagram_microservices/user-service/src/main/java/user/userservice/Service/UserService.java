@@ -8,4 +8,5 @@ public interface UserService {
     User update(User user) throws Exception;
     void delete(Long id);
     User findOne(Long id);
+    User findByUsername(String username);
 }

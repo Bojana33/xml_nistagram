@@ -38,6 +38,8 @@ public class UserServiceImpl implements UserService {
         userToUpdate.setPhone(user.getPhone());
         userToUpdate.setUsername(user.getUsername());
         userToUpdate.setRole(user.getRole());
+        userToUpdate.setName(user.getName());
+        userToUpdate.setLastname(user.getLastname());
 
         this.userRepository.save(userToUpdate);
 
@@ -53,5 +55,12 @@ public class UserServiceImpl implements UserService {
     public User findOne(Long id) {
         User user = this.userRepository.getById(id);
         return user;
+    }
+
+    @Override
+    public User findByUsername(String username) {
+        User user = this.userRepository.findByUsername(username);
+        return user;
+
     }
 }
