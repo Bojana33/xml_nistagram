@@ -11,15 +11,15 @@
     <form th:action="@{/saveUser}" th:object="${user}" method="post">
         <div class="mb-3">
             <label for="name" class="form-label">Name</label>
-            <input type="name" class="form-control" id="name" th:field="*{name}">
+            <input type="text" class="form-control" id="name" th:field="*{name}">
         </div>
         <div class="mb-3">
             <label for="lastname" class="form-label">Lastname</label>
-            <input type="lastname" class="form-control" id="lastname" th:field="*{lastname}">
+            <input type="text" class="form-control" id="lastname" th:field="*{lastname}">
         </div>
         <div class="mb-3">
             <label for="username" class="form-label">Username</label>
-            <input type="username" class="form-control" id="username" th:field="*{username}">
+            <input type="text" class="form-control" id="username" th:field="*{username}">
         </div>
         <div class="mb-3">
             <label for="email" class="form-label">Email address</label>
@@ -31,7 +31,7 @@
         </div>
         <div class="mb-3">
             <label for="phone" class="form-label">Mobile phone</label>
-            <input type="phone" class="form-control" id="phone" th:field="*{phone}">
+            <input type="text" class="form-control" id="phone" th:field="*{phone}">
         </div>
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>
