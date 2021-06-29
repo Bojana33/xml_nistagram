@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import post.postservice.Model.EmoticonType;
 import post.postservice.Model.Post;
+import post.postservice.Model.UserInfo;
 import post.postservice.Repository.EmoticonRepository;
 import post.postservice.Service.EmoticonService;
 
@@ -15,8 +16,8 @@ public class EmoticonServiceImpl implements EmoticonService {
     @Autowired
     private EmoticonRepository emoticonRepository;
 
-  /*  public List<Post> findByLike(EmoticonType emoticonType) throws Exception{
-        List<Post> likedPosts = this.emoticonRepository.getByLike(emoticonType);
+    public List<Post> findByLike(EmoticonType emoticonType, UserInfo userInfo) throws Exception{
+        List<Post> likedPosts = this.emoticonRepository.getByLike(emoticonType, userInfo);
         if (emoticonType == emoticonType.LIKE) {
             return likedPosts;
         }
@@ -27,8 +28,8 @@ public class EmoticonServiceImpl implements EmoticonService {
 
     }
 
-    public List<Post> findByDislike(EmoticonType emoticonType) throws Exception{
-        List<Post> dislikedPosts = this.emoticonRepository.getByDislike(emoticonType);
+    public List<Post> findByDislike(EmoticonType emoticonType, UserInfo userInfo) throws Exception{
+        List<Post> dislikedPosts = this.emoticonRepository.getByDislike(emoticonType, userInfo);
         if(emoticonType == EmoticonType.DISLIKE){
             return dislikedPosts;
         }
@@ -36,6 +37,6 @@ public class EmoticonServiceImpl implements EmoticonService {
             throw new Exception("There are no disliked posts.");
         }
         return null;
-    }*/
+    }
 
 }
