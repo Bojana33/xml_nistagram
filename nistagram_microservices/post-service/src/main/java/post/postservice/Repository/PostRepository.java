@@ -9,9 +9,12 @@ import java.util.List;
 @Repository
 
 public interface PostRepository extends JpaRepository<Post, Long> {
+
     List<Post> findByUsernameOrderByCreatedAtDesc(String username);
     List<Post> findByIdInOrderByCreatedAtDesc(List<Long> ids);
 
+    List<Post> findByLikes(String username);
+    List<Post> findByDislikes(String username);
 
 }
 

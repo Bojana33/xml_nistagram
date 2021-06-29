@@ -1,20 +1,16 @@
 package post.postservice.Controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.multipart.MultipartFile;
+import post.postservice.Model.EmoticonType;
 import post.postservice.Model.Post;
 import post.postservice.Service.PostService;
 
-import java.io.IOException;
-import java.time.LocalDate;
-import java.util.Base64;
 import java.util.Date;
 import java.util.List;
 
@@ -61,5 +57,16 @@ public class PostController {
         return ResponseEntity.ok(posts);
     }
 
+    @GetMapping(value = "/likes")
+    public ResponseEntity<?> findByLike(@PathVariable("emoticonType") EmoticonType emoticonType, String username) throws Exception{
+        List<Post> likes = postService.findByLike(emoticonType, username);
+        return ResponseEntity.ok(likes);
+    }
+
+    @GetMapping(value = "/dislikes")
+    public ResponseEntity<?> findByDislike(@PathVariable("emoticonType") EmoticonType emoticonType, String username) throws Exception{
+        List<Post> dislikes = postService.findByDislike(emoticonType, username);
+        return ResponseEntity.ok(dislikes);
+    }
 }
 

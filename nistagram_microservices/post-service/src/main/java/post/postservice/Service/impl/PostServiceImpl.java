@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
+import post.postservice.Model.EmoticonType;
 import post.postservice.Model.Post;
 import post.postservice.Repository.PostRepository;
 import post.postservice.Service.PostService;
@@ -93,5 +94,29 @@ public class PostServiceImpl implements PostService {
     @Override
     public List<Post> postsByIdIn(List<Long> ids) {
         return postRepository.findByIdInOrderByCreatedAtDesc(ids);
+    }
+
+
+    public List<Post> findByLike(EmoticonType emoticonType, String username) throws Exception{
+        List<Post> likedPosts = this.postRepository.findByLikes(username);
+        if (emoticonType == emoticonType.LIKE) {
+            return likedPosts;
+        }
+        else if(likedPosts == null) {
+            throw new Exception("There are no liked posts.");
+        }
+        return null;
+
+    }
+
+    public List<Post> findByDislike(EmoticonType emoticonType, String username) throws Exception{
+        List<Post> dislikedPosts = this.postRepository.findByDislikes(username);
+        if(emoticonType == EmoticonType.DISLIKE){
+            return dislikedPosts;
+        }
+        if(dislikedPosts == null) {
+            throw new Exception("There are no disliked posts.");
+        }
+        return null;
     }
 }

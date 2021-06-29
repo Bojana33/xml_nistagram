@@ -5,6 +5,8 @@ import lombok.*;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Data
@@ -33,7 +35,15 @@ public class Post implements Serializable {
     @Column
     private String imageUrl;
 
+    @ManyToMany
+    @JoinTable(name="likes", joinColumns = @JoinColumn(name="UserId",referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "likesId", referencedColumnName = "id"))
+    private Set<Post> likes = new HashSet<>();
 
+    @ManyToMany
+    @JoinTable(name="dislikes", joinColumns = @JoinColumn(name="UserId",referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "dislikesId", referencedColumnName = "id"))
+    private Set<Post> dislikes = new HashSet<>();
 }
 
 

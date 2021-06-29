@@ -1,6 +1,7 @@
 package post.postservice.Service;
 
 import org.springframework.web.multipart.MultipartFile;
+import post.postservice.Model.EmoticonType;
 import post.postservice.Model.Post;
 
 import java.util.List;
@@ -22,4 +23,8 @@ public interface PostService {
     List<Post> postsByUsername(String username);
 
     List<Post> postsByIdIn(List<Long> ids);
+
+    List<Post> findByLike(EmoticonType emoticonType, String username) throws Exception;
+
+    List<Post> findByDislike(EmoticonType emoticonType, String username) throws Exception;
 }

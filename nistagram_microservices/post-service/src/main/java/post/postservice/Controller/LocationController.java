@@ -16,8 +16,8 @@ public class LocationController {
     public LocationService locationService;
 
     @GetMapping(value = "/findByName")
-    public ResponseEntity<?> findByName(@PathVariable("name") List<String> names) {
-        List<Location> locations = locationService.findByName(names);
+    public ResponseEntity<?> findByName(@PathVariable("name") String name) {
+        List<Location> locations = locationService.findByName(name);
         return ResponseEntity.ok(locations);
     }
 
