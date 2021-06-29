@@ -15,6 +15,5 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
     List<Post> findByLikes(String username);
     List<Post> findByDislikes(String username);
-
 }
 
