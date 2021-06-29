@@ -6,8 +6,8 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import user.userservice.Model.User;
 import user.userservice.Model.UserRole;
 import user.userservice.Service.UserService;
@@ -15,7 +15,6 @@ import user.userservice.Service.UserService;
 import java.util.List;
 
 @Controller
-@RequestMapping(value = "/")
 public class UserController {
 
     private UserService userService;
@@ -23,6 +22,17 @@ public class UserController {
     @Autowired
     public UserController(UserService userService){
         this.userService = userService;
+    }
+
+    @GetMapping(value = "/")
+    public String homePage(){
+        return "home";
+    }
+
+    @GetMapping(value = "/{user}")
+    public String userHomePage(@PathVariable(name = "user") String user, Model model){
+        model.addAttribute("regUser", this.userService.findByUsername(user));
+        return "regUserHome";
     }
 
     @GetMapping(value = "/registration")
@@ -40,7 +50,7 @@ public class UserController {
         user.setRole(UserRole.USER);
         //user.setActive(Boolean.TRUE);
         this.userService.create(user);
-        return "redirect:/users";
+        return "redirect:/" + user.getUsername();
     }
 
     @GetMapping(value = "/users")

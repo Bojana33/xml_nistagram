@@ -48,7 +48,7 @@ public class User implements Serializable {
         @Column
         private Gender gender;
 
-        @OneToOne
+        @OneToOne//(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
         private Profile profile;
 
         @OneToMany(mappedBy = "sender", targetEntity = Request.class)

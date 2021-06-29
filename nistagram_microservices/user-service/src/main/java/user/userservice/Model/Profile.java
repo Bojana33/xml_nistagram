@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.yaml.snakeyaml.tokens.FlowEntryToken;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -31,6 +33,7 @@ public class Profile implements Serializable {
     private String profilePicture;
 
     @Column
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date birthday;
 
     @Column
@@ -40,15 +43,21 @@ public class Profile implements Serializable {
     private String website;
 
     @Column
-    private Boolean verified;
+    private Boolean verified = Boolean.FALSE;
 
     @Column
     private Boolean privateProfile;
 
     @Column
-    private Boolean deactivated;
+    private Boolean deactivated =Boolean.FALSE;
 
-    @OneToOne
+    @Column
+    private Boolean tagMe = Boolean.TRUE;
+
+    @Column
+    private Boolean messagesFromUnfollowers = Boolean.TRUE;
+
+    @OneToOne//(fetch = FetchType.LAZY)
     private User user;
 
     @ManyToMany
