@@ -42,6 +42,13 @@ public class UserServiceImpl implements UserService {
         userToUpdate.setRole(user.getRole());
         userToUpdate.setName(user.getName());
         userToUpdate.setLastname(user.getLastname());
+        userToUpdate.setWebsite(user.getWebsite());
+        userToUpdate.setTagMe(user.getTagMe());
+        userToUpdate.setDisplayName(user.getDisplayName());
+        userToUpdate.setProfilePicture(user.getProfilePicture());
+        userToUpdate.setBirthday(user.getBirthday());
+        userToUpdate.setMessagesFromUnfollowers(user.getMessagesFromUnfollowers());
+        userToUpdate.setBiography(user.getBiography());
 
         this.userRepository.save(userToUpdate);
 

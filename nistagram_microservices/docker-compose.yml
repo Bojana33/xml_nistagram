@@ -20,7 +20,10 @@ services:
         - database-data:/var/lib/postgres
 
     user-service:
-      build: ./user-service
+      build:
+        context: ./user-service
+        dockerfile: Dockerfile
+#      build: ./user-service
       image: user_service_image
       container_name: userServiceContainer
       hostname: user-service
