@@ -1,6 +1,20 @@
 version: '3.9'
 
 services:
+
+    rabbitmq:
+      image: rabbitmq
+      container_name: rabbitmqContainer
+      hostname: rabbitmq
+      networks:
+        service-discovery-network:
+          aliases:
+              - rabbitmq
+      ports:
+        - 5672:5672
+      volumes:
+        - rabbitmq_volume:/var/lib/rabbitmq
+
     database:
       image: postgres
       container_name: postgre_db
@@ -20,10 +34,7 @@ services:
         - database-data:/var/lib/postgres
 
     user-service:
-      build:
-        context: ./user-service
-        dockerfile: Dockerfile
-#      build: ./user-service
+      build: ./user-service
       image: user_service_image
       container_name: userServiceContainer
       hostname: user-service
@@ -36,10 +47,12 @@ services:
         DATABASE_PASSWORD: bojana
         DATABASE_DOMAIN: database
         DATABASE_SCHEME: ${DATABASE_SCHEME}
+        RABBITMQ_NETWORK: rabbitmq
       volumes:
         - $HOME/.m2:/root/.m2
       depends_on:
         - database
+        - rabbitmq
       ports:
         - 8089:8089
 
@@ -57,10 +70,12 @@ services:
         DATABASE_PASSWORD: bojana
         DATABASE_DOMAIN: database
         DATABASE_SCHEME: ${DATABASE_SCHEME}
+        RABBITMQ_NETWORK: rabbitmq
       volumes:
         - $HOME/.m2:/root/.m2
       depends_on:
         - database
+        - rabbitmq
       ports:
         - 8088:8088
 
@@ -78,15 +93,18 @@ services:
         DATABASE_PASSWORD: bojana
         DATABASE_DOMAIN: database
         DATABASE_SCHEME: ${DATABASE_SCHEME}
+        RABBITMQ_NETWORK: rabbitmq
       volumes:
         - $HOME/.m2:/root/.m2
       depends_on:
         - database
+        - rabbitmq
       ports:
         - 8087:8087
 
 volumes:
   database-data:
+  rabbitmq_volume:
 
 networks:
   service-discovery-network:

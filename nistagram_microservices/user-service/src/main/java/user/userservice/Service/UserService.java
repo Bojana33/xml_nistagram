@@ -12,4 +12,5 @@ public interface UserService {
     User findOne(Long id);
     User findByUsername(String username);
     List<User> findAll();
+    User privacySettings(User user) throws Exception;
 }

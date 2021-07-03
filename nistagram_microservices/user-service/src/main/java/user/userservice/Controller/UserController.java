@@ -1,72 +1,52 @@
 package user.userservice.Controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import user.userservice.Model.User;
-import user.userservice.Model.UserRole;
 import user.userservice.Service.UserService;
 
 import java.util.List;
 
-@Controller
+@RestController
 public class UserController {
 
     private UserService userService;
 
     @Autowired
-    public UserController(UserService userService){
+    public UserController(UserService userService) {
         this.userService = userService;
     }
 
-    @GetMapping(value = "/")
-    public String homePage(){
-        return "home";
-    }
-
-    @GetMapping(value = "/{user}")
-    public String userHomePage(@PathVariable(name = "user") String user, Model model){
-        model.addAttribute("regUser", this.userService.findByUsername(user));
-        return "regUserHome";
-    }
-
-    @GetMapping(value = "/registration")
-    public String registration(Model model){
-        User user = new User();
-        model.addAttribute("user", user);
-        user.setRole(UserRole.USER);
-        //user.setActive(Boolean.TRUE);
-        return "registration";
-    }
-
     @PostMapping(value = "/saveUser")
-    public String createUser(@ModelAttribute User user, BindingResult errors, Model model) throws Exception{
-        model.addAttribute("userToSave", user);
-        user.setRole(UserRole.USER);
-        //user.setActive(Boolean.TRUE);
+    public ResponseEntity<String> createUser(@RequestBody User user) throws Exception {
+        if (userService.findByUsername(user.getUsername()) != null) {
+            return new ResponseEntity<String>("Username already exist", HttpStatus.BAD_REQUEST);
+        }
         this.userService.create(user);
-        return "redirect:/" + user.getUsername();
+        return new ResponseEntity<String>("User is created", HttpStatus.OK);
     }
 
     @GetMapping(value = "/users")
-    public String showUsers(Model model) {
-        List<User> users = this.userService.findAll();
-        model.addAttribute("usrs", users);
-        model.addAttribute("usr", new User());
-        return "users";
+    public ResponseEntity<List<User>> showUsers() {
+        return new ResponseEntity<>(this.userService.findAll(), HttpStatus.OK);
     }
 
-    @GetMapping
-    public String testiraj(Model model) {
-        Integer id = 111;
-        User user = this.userService.findOne(new Long(id));
-        model.addAttribute("message",user.getEmail());
-        return "test";
+    @GetMapping(value = "/{username}")
+    public ResponseEntity<User> getUser(@PathVariable String username){
+        return new ResponseEntity<>(this.userService.findByUsername(username), HttpStatus.OK);
     }
 
+    @PostMapping(value = "/updateProfile")
+    public ResponseEntity<User> updateProfile(@RequestBody User user) throws Exception{
+        User userToUpdate = this.userService.findByUsername(user.getUsername());
+        return new ResponseEntity<>(this.userService.update(userToUpdate), HttpStatus.OK);
+    }
+
+    @PostMapping(value = "profile/privacySettings")
+    public ResponseEntity<User> privacySettings(@RequestBody User user) throws Exception {
+        User userToUpdate = this.userService.findByUsername(user.getUsername());
+        return new ResponseEntity<>(this.userService.privacySettings(userToUpdate), HttpStatus.OK);
+    }
 }

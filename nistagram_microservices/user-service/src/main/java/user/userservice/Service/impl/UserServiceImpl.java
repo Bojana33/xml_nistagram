@@ -43,13 +43,25 @@ public class UserServiceImpl implements UserService {
         userToUpdate.setName(user.getName());
         userToUpdate.setLastname(user.getLastname());
         userToUpdate.setWebsite(user.getWebsite());
-        userToUpdate.setTagMe(user.getTagMe());
         userToUpdate.setDisplayName(user.getDisplayName());
         userToUpdate.setProfilePicture(user.getProfilePicture());
         userToUpdate.setBirthday(user.getBirthday());
-        userToUpdate.setMessagesFromUnfollowers(user.getMessagesFromUnfollowers());
         userToUpdate.setBiography(user.getBiography());
 
+        this.userRepository.save(userToUpdate);
+
+        return userToUpdate;
+    }
+
+    @Override
+    public User privacySettings(User user) throws Exception{
+        User userToUpdate = this.userRepository.getById(user.getId());
+        if (userToUpdate == null){
+            throw new Exception("User doesn't exist");
+        }
+        userToUpdate.setMessagesFromUnfollowers(user.getMessagesFromUnfollowers());
+        userToUpdate.setTagMe(user.getTagMe());
+        userToUpdate.setPrivateProfile(user.getPrivateProfile());
         this.userRepository.save(userToUpdate);
 
         return userToUpdate;
