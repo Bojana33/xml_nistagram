@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -31,4 +33,6 @@ public class User {
     @Column
     private String biography;
 
+    @OneToMany(mappedBy = "sender", targetEntity = VerificationRequest.class)
+    private Set<VerificationRequest> verificationRequests = new HashSet<>();
 }

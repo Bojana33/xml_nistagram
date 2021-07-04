@@ -6,6 +6,8 @@ import user.userservice.Model.User;
 import user.userservice.Repository.UserRepository;
 import user.userservice.Service.UserService;
 
+import java.util.List;
+
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -38,7 +40,28 @@ public class UserServiceImpl implements UserService {
         userToUpdate.setPhone(user.getPhone());
         userToUpdate.setUsername(user.getUsername());
         userToUpdate.setRole(user.getRole());
+        userToUpdate.setName(user.getName());
+        userToUpdate.setLastname(user.getLastname());
+        userToUpdate.setWebsite(user.getWebsite());
+        userToUpdate.setDisplayName(user.getDisplayName());
+        userToUpdate.setProfilePicture(user.getProfilePicture());
+        userToUpdate.setBirthday(user.getBirthday());
+        userToUpdate.setBiography(user.getBiography());
 
+        this.userRepository.save(userToUpdate);
+
+        return userToUpdate;
+    }
+
+    @Override
+    public User privacySettings(User user) throws Exception{
+        User userToUpdate = this.userRepository.getById(user.getId());
+        if (userToUpdate == null){
+            throw new Exception("User doesn't exist");
+        }
+        userToUpdate.setMessagesFromUnfollowers(user.getMessagesFromUnfollowers());
+        userToUpdate.setTagMe(user.getTagMe());
+        userToUpdate.setPrivateProfile(user.getPrivateProfile());
         this.userRepository.save(userToUpdate);
 
         return userToUpdate;
@@ -53,5 +76,17 @@ public class UserServiceImpl implements UserService {
     public User findOne(Long id) {
         User user = this.userRepository.getById(id);
         return user;
+    }
+
+    @Override
+    public User findByUsername(String username) {
+        User user = this.userRepository.findByUsername(username);
+        return user;
+
+    }
+
+    @Override
+    public List<User> findAll() {
+        return this.userRepository.findAll();
     }
 }
