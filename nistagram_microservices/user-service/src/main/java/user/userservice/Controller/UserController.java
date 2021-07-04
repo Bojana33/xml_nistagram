@@ -1,6 +1,7 @@
 package user.userservice.Controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -8,6 +9,7 @@ import user.userservice.Model.User;
 import user.userservice.Service.UserService;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 public class UserController {
@@ -40,13 +42,44 @@ public class UserController {
 
     @PostMapping(value = "/updateProfile")
     public ResponseEntity<User> updateProfile(@RequestBody User user) throws Exception{
-        User userToUpdate = this.userService.findByUsername(user.getUsername());
-        return new ResponseEntity<>(this.userService.update(userToUpdate), HttpStatus.OK);
+        if(this.userService.findByUsername(user.getUsername()) != null) {
+            User userToUpdate = this.userService.update(user);
+            return new ResponseEntity<>(userToUpdate, HttpStatus.OK);
+        }
+        throw new Exception("User with this username doesn't exist");
     }
 
-    @PostMapping(value = "profile/privacySettings")
-    public ResponseEntity<User> privacySettings(@RequestBody User user) throws Exception {
-        User userToUpdate = this.userService.findByUsername(user.getUsername());
-        return new ResponseEntity<>(this.userService.privacySettings(userToUpdate), HttpStatus.OK);
+    @PostMapping(value = "profile/{username}/privacySettings")
+    public ResponseEntity<User> privacySettings(@PathVariable String username, @RequestParam(value = "tagMe") Boolean tagMe,
+                                                @RequestParam(value = "messagesFromUnfollowers") Boolean messagesFromUnfollowers,
+                                                @RequestParam(value = "privateProfile") Boolean privateProfile) throws Exception {
+        if(this.userService.findByUsername(username) != null) {
+            User userToUpdate = this.userService.privacySettings(username,tagMe,messagesFromUnfollowers,privateProfile);
+            return new ResponseEntity<>(userToUpdate, HttpStatus.OK);
+        }
+        throw new Exception("User with this username doesn't exist");
+    }
+
+    @PostMapping(value = "{username}/profile/{username2}/block")
+    public ResponseEntity<String> blockUser(@PathVariable String username, @PathVariable String username2){
+        this.userService.blockUser(username,username2);
+        return new ResponseEntity<>("User is blocked.", HttpStatus.OK);
+    }
+
+    @GetMapping(value = "{username}/profile/getBlockedUsers")
+    public ResponseEntity<Set<String>> getBlockedUsers(@PathVariable String username){
+        return new ResponseEntity<>(this.userService.findByUsername(username).getBlockedProfiles(),HttpStatus.OK);
+    }
+
+    @PostMapping(value = "profile/{username}/notificationSettings")
+    public ResponseEntity<User> notificationSettings(@PathVariable String username, @RequestParam(value = "") Boolean messageNotification,
+                                                @RequestParam(value = "") Boolean postNotification,
+                                                @RequestParam(value = "") Boolean commentNotification,
+                                                @RequestParam(value = "") Boolean followNotification) throws Exception {
+        if(this.userService.findByUsername(username) != null) {
+            User userToUpdate = this.userService.notificationSettings(username,messageNotification,postNotification,commentNotification,followNotification);
+            return new ResponseEntity<>(userToUpdate, HttpStatus.OK);
+        }
+        throw new Exception("User with this username doesn't exist");
     }
 }

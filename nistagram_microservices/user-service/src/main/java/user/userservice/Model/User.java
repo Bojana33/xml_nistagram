@@ -8,9 +8,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Getter
 @Setter
@@ -87,10 +85,21 @@ public class User implements Serializable {
         @OneToMany(mappedBy = "receiver", targetEntity = Request.class)
         private Set<Request> receivedRequests = new HashSet<>();
 
-        @ManyToMany
-        @JoinTable(name="BlockedProfiles", joinColumns = @JoinColumn(name="ProfileId",referencedColumnName = "id"),
-                inverseJoinColumns = @JoinColumn(name = "BlockedProfileId", referencedColumnName = "id"))
-        private Set<User> blockedProfiles = new HashSet<>();
+        @ElementCollection
+        private Set<String> blockedProfiles;
+
+        @Column
+        private Boolean followNotification = Boolean.TRUE;
+
+        @Column
+        private Boolean messageNotification = Boolean.TRUE;
+
+        @Column
+        private Boolean postNotification = Boolean.TRUE;
+
+        @Column
+        private Boolean commentNotification = Boolean.TRUE;
+
 
 }
 

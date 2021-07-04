@@ -54,16 +54,37 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User privacySettings(User user) throws Exception{
-        User userToUpdate = this.userRepository.getById(user.getId());
+    public User privacySettings(String username, Boolean tagMe, Boolean messagesFromUnfollowers, Boolean privateProfile) throws Exception{
+        User userToUpdate = this.userRepository.findByUsername(username);
         if (userToUpdate == null){
             throw new Exception("User doesn't exist");
         }
-        userToUpdate.setMessagesFromUnfollowers(user.getMessagesFromUnfollowers());
-        userToUpdate.setTagMe(user.getTagMe());
-        userToUpdate.setPrivateProfile(user.getPrivateProfile());
+        userToUpdate.setMessagesFromUnfollowers(messagesFromUnfollowers);
+        userToUpdate.setTagMe(tagMe);
+        userToUpdate.setPrivateProfile(privateProfile);
         this.userRepository.save(userToUpdate);
 
+        return userToUpdate;
+    }
+
+    @Override
+    public void blockUser(String usernameBlocks, String usernameToBlock) {
+        User userBlocks = this.userRepository.findByUsername(usernameBlocks);
+        userBlocks.getBlockedProfiles().add(usernameToBlock);
+        this.userRepository.save(userBlocks);
+    }
+
+    @Override
+    public User notificationSettings(String username, Boolean messageNotification, Boolean postNotification, Boolean commentNotification,Boolean followNotification) throws Exception {
+        User userToUpdate = this.userRepository.findByUsername(username);
+        if (userToUpdate == null){
+            throw new Exception("User doesn't exist");
+        }
+        userToUpdate.setCommentNotification(commentNotification);
+        userToUpdate.setPostNotification(postNotification);
+        userToUpdate.setFollowNotification(followNotification);
+        userToUpdate.setMessageNotification(messageNotification);
+        this.userRepository.save(userToUpdate);
         return userToUpdate;
     }
 
