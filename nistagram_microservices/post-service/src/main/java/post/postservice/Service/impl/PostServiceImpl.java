@@ -120,7 +120,7 @@ public class PostServiceImpl implements PostService {
         }
         return null;
     }
-=======
+
 //    public void delete(Long id, String username) throws Exception {
 //        Post post = this.postRepository.getById(id);
 //        if (post.getUsername() != username) {
@@ -133,5 +133,4 @@ public class PostServiceImpl implements PostService {
 //
 //    public List<Post> postsByUsername(String username){return postRepository.findByUsernameOrderByCreatedAtDesc(username);}
 //    public List<Post> postsByIdIn(List<Long> ids){return postRepository.findByIdInOrderByCreatedAtDesc(ids);}
->>>>>>> develop
 }

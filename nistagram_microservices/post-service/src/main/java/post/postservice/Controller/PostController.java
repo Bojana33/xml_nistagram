@@ -17,8 +17,6 @@ import java.util.List;
 @RestController
 public class PostController {
 
-<<<<<<< HEAD
-
     private PostService postService;
 
     @Autowired
@@ -56,13 +54,6 @@ public class PostController {
         List<Post> posts = postService.postsByUsername(username);
         return ResponseEntity.ok(posts);
     }
-=======
-    private PostService postService;
-
-    @Autowired
-    public PostController(PostService postService){
-        this.postService = postService;
-    }
 
     /*@PostMapping()
     public ResponseEntity<?> createPost(@RequestBody , @RequestHeader(value= "username") String username) throws Exception {
@@ -89,7 +80,6 @@ public class PostController {
 //        List<Post> posts = postService.postsByUsername(username);
 //        return ResponseEntity.ok(posts);
 //    }
->>>>>>> develop
 
     @GetMapping(value = "/likes")
     public ResponseEntity<?> findByLike(@PathVariable("emoticonType") EmoticonType emoticonType, String username) throws Exception{

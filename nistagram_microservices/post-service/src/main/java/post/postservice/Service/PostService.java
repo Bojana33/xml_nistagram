@@ -8,11 +8,8 @@ import java.util.List;
 
 public interface PostService {
 
-  //  Post create(Post post) throws Exception;
-
     Post update(Post post) throws Exception;
 
-<<<<<<< HEAD
     void delete(Long id) throws Exception;
 
     Post create(Post post);
@@ -28,11 +25,10 @@ public interface PostService {
     List<Post> findByLike(EmoticonType emoticonType, String username) throws Exception;
 
     List<Post> findByDislike(EmoticonType emoticonType, String username) throws Exception;
-=======
+
 //    void delete(Long id, String username) throws Exception;
 //
 //    List<Post> postsByUsername(String username);
 //
 //    List<Post> postsByIdIn(List<Long> ids);
->>>>>>> develop
 }
