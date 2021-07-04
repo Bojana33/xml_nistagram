@@ -7,13 +7,18 @@ import post.postservice.Model.Post;
 import java.util.List;
 
 @Repository
-
 public interface PostRepository extends JpaRepository<Post, Long> {
 
     List<Post> findByUsernameOrderByCreatedAtDesc(String username);
     List<Post> findByIdInOrderByCreatedAtDesc(List<Long> ids);
+<<<<<<< HEAD
 
     List<Post> findByLikes(String username);
     List<Post> findByDislikes(String username);
+=======
+//
+//
+//    void delete(Long id);
+>>>>>>> develop
 }
 

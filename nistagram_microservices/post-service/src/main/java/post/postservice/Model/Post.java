@@ -4,6 +4,8 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -32,8 +34,8 @@ public class Post implements Serializable {
     @Column
     private String username;
 
-    @Column
-    private String imageUrl;
+//    @ElementCollection
+//    private Collection<String> imageUrl = new ArrayList<String>();
 
     @ManyToMany
     @JoinTable(name="likes", joinColumns = @JoinColumn(name="UserId",referencedColumnName = "id"),

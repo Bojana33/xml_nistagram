@@ -6,6 +6,8 @@ import user.userservice.Model.User;
 import user.userservice.Repository.UserRepository;
 import user.userservice.Service.UserService;
 
+import java.util.List;
+
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -38,9 +40,51 @@ public class UserServiceImpl implements UserService {
         userToUpdate.setPhone(user.getPhone());
         userToUpdate.setUsername(user.getUsername());
         userToUpdate.setRole(user.getRole());
+        userToUpdate.setName(user.getName());
+        userToUpdate.setLastname(user.getLastname());
+        userToUpdate.setWebsite(user.getWebsite());
+        userToUpdate.setDisplayName(user.getDisplayName());
+        userToUpdate.setProfilePicture(user.getProfilePicture());
+        userToUpdate.setBirthday(user.getBirthday());
+        userToUpdate.setBiography(user.getBiography());
 
         this.userRepository.save(userToUpdate);
 
+        return userToUpdate;
+    }
+
+    @Override
+    public User privacySettings(String username, Boolean tagMe, Boolean messagesFromUnfollowers, Boolean privateProfile) throws Exception{
+        User userToUpdate = this.userRepository.findByUsername(username);
+        if (userToUpdate == null){
+            throw new Exception("User doesn't exist");
+        }
+        userToUpdate.setMessagesFromUnfollowers(messagesFromUnfollowers);
+        userToUpdate.setTagMe(tagMe);
+        userToUpdate.setPrivateProfile(privateProfile);
+        this.userRepository.save(userToUpdate);
+
+        return userToUpdate;
+    }
+
+    @Override
+    public void blockUser(String usernameBlocks, String usernameToBlock) {
+        User userBlocks = this.userRepository.findByUsername(usernameBlocks);
+        userBlocks.getBlockedProfiles().add(usernameToBlock);
+        this.userRepository.save(userBlocks);
+    }
+
+    @Override
+    public User notificationSettings(String username, Boolean messageNotification, Boolean postNotification, Boolean commentNotification,Boolean followNotification) throws Exception {
+        User userToUpdate = this.userRepository.findByUsername(username);
+        if (userToUpdate == null){
+            throw new Exception("User doesn't exist");
+        }
+        userToUpdate.setCommentNotification(commentNotification);
+        userToUpdate.setPostNotification(postNotification);
+        userToUpdate.setFollowNotification(followNotification);
+        userToUpdate.setMessageNotification(messageNotification);
+        this.userRepository.save(userToUpdate);
         return userToUpdate;
     }
 
@@ -53,5 +97,17 @@ public class UserServiceImpl implements UserService {
     public User findOne(Long id) {
         User user = this.userRepository.getById(id);
         return user;
+    }
+
+    @Override
+    public User findByUsername(String username) {
+        User user = this.userRepository.findByUsername(username);
+        return user;
+
+    }
+
+    @Override
+    public List<User> findAll() {
+        return this.userRepository.findAll();
     }
 }
