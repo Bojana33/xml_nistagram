@@ -7,6 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import post.postservice.DTO.Image;
 import post.postservice.Model.EmoticonType;
 import post.postservice.Model.Post;
 import post.postservice.Service.PostService;
@@ -28,8 +29,9 @@ public class PostController {
     public String createPost(@ModelAttribute Post post,
                              @RequestParam("file") MultipartFile file,
                              @RequestParam("caption") String caption,
-                             @RequestParam("username") String username)  {
-        postService.savePost(post, file, caption, username);
+                             @RequestParam("username") String username,
+                             @RequestParam("image") Image image) {
+        postService.savePost(post, file, caption, username, image);
         return "post.html";
     }
 

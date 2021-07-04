@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
+import post.postservice.DTO.Image;
 import post.postservice.Model.EmoticonType;
 import post.postservice.Model.Post;
 import post.postservice.Repository.PostRepository;
@@ -23,17 +24,9 @@ public class PostServiceImpl implements PostService {
     public PostServiceImpl(PostRepository postRepository) {
         this.postRepository = postRepository;
     }
-/*
-    @Override
-    public Post create(Post post) throws Exception {
-        if (post.getId() != null) {
-            throw new Exception("Post with this Id already exist");
-        }
 
-        return this.postRepository.save(post);
-    }*/
     @Override
-    public Post savePost(Post post, MultipartFile file, String caption, String username)
+    public Post savePost(Post post, MultipartFile file, String caption, String username, Image image)
     {
 
         String filename = StringUtils.cleanPath(file.getOriginalFilename());
@@ -42,7 +35,7 @@ public class PostServiceImpl implements PostService {
             System.out.println("Not a valid file");
         }
         try {
-            post.setImageUrl(Base64.getEncoder().encodeToString(file.getBytes()));
+            image.setUri(Base64.getEncoder().encodeToString(file.getBytes()));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -53,6 +46,7 @@ public class PostServiceImpl implements PostService {
 
         return this.postRepository.save(post);
     }
+
     @Override
     public Post create(Post post)
     {
@@ -70,14 +64,13 @@ public class PostServiceImpl implements PostService {
         postToUpdate.setCreatedAt(post.getCreatedAt());
         postToUpdate.setUpdatedAt(post.getUpdatedAt());
         postToUpdate.setUsername(post.getUsername());
-        postToUpdate.setImageUrl(post.getImageUrl());
+        //postToUpdate.setImageUrl(post.getImageUrl());
 
         this.postRepository.save(postToUpdate);
 
         return postToUpdate;
     }
-<<<<<<< HEAD
-    @Override
+
     public void delete(Long id) throws Exception {
         Post post = this.postRepository.getById(id);
         this.postRepository.delete(post);
@@ -86,12 +79,14 @@ public class PostServiceImpl implements PostService {
     public List<Post> postsByUsername(String username) {
         return postRepository.findByUsernameOrderByCreatedAtDesc(username);
     }
+
     @Override
     public Post findOne(Long id)
     {
         Post post = this.postRepository.getById(id);
         return post;
     }
+
     @Override
     public List<Post> postsByIdIn(List<Long> ids) {
         return postRepository.findByIdInOrderByCreatedAtDesc(ids);
