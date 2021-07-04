@@ -4,6 +4,8 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 
 @Entity
@@ -30,8 +32,8 @@ public class Post implements Serializable {
     @Column
     private String username;
 
-    @Column
-    private String imageUrl;
+//    @ElementCollection
+//    private Collection<String> imageUrl = new ArrayList<String>();
 
 
 }
