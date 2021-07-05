@@ -12,11 +12,15 @@ import java.util.Date;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/post")
 public class PostController {
 
+    private PostService postService;
+
     @Autowired
-    public PostService postService;
+    public PostController(PostService postService){
+        this.postService = postService;
+    }
+
     /*@PostMapping()
     public ResponseEntity<?> createPost(@RequestBody , @RequestHeader(value= "username") String username) throws Exception {
         Post newPost = postService.create();
@@ -29,19 +33,19 @@ public class PostController {
         logger.info("Admin {} je zatrazio kreiranje modela {} za brend{}. {}", username, modelDTO.getModelName(), modelDTO.getBrandName(), LocalDateTime.now());
         return modelService.createModel(modelDTO.getBrandName(), modelDTO.getModelName(), username);
     }*/
-
-    @DeleteMapping("/delete/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable("id") Long id, @RequestHeader(value = "username") String username) throws Exception {
-
-        postService.delete(id, username);
-    }
-
-    @GetMapping("/posts/{username}")
-    public ResponseEntity<?> findUserPosts(@PathVariable("username") String username) {
-        List<Post> posts = postService.postsByUsername(username);
-        return ResponseEntity.ok(posts);
-    }
+//
+//    @DeleteMapping("/delete/{id}")
+//    @ResponseStatus(HttpStatus.NO_CONTENT)
+//    public void delete(@PathVariable("id") Long id, @RequestHeader(value = "username") String username) throws Exception {
+//
+//        postService.delete(id, username);
+//    }
+//
+//    @GetMapping("/posts/{username}")
+//    public ResponseEntity<?> findUserPosts(@PathVariable("username") String username) {
+//        List<Post> posts = postService.postsByUsername(username);
+//        return ResponseEntity.ok(posts);
+//    }
 
 }
 

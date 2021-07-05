@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="https://www.thymeleaf.org">
+<html xmlns:th="https://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Registration</title>
@@ -8,18 +8,18 @@
 </head>
 <body>
     <h1>Registration</h1>
-    <form th:action="@{/saveUserj}" th:object="${user}" method="post">
+    <form th:action="@{/saveUser}" th:object="${user}" method="post">
         <div class="mb-3">
             <label for="name" class="form-label">Name</label>
-            <input type="name" class="form-control" id="name" th:field="*{name}">
+            <input type="text" class="form-control" id="name" th:field="*{name}">
         </div>
         <div class="mb-3">
             <label for="lastname" class="form-label">Lastname</label>
-            <input type="lastname" class="form-control" id="lastname" th:field="*{lastname}">
+            <input type="text" class="form-control" id="lastname" th:field="*{lastname}">
         </div>
         <div class="mb-3">
             <label for="username" class="form-label">Username</label>
-            <input type="username" class="form-control" id="username" th:field="*{username}">
+            <input type="text" class="form-control" id="username" th:field="*{username}">
         </div>
         <div class="mb-3">
             <label for="email" class="form-label">Email address</label>
@@ -31,23 +31,31 @@
         </div>
         <div class="mb-3">
             <label for="phone" class="form-label">Mobile phone</label>
-            <input type="phone" class="form-control" id="phone" th:field="*{phone}">
+            <input type="text" class="form-control" id="phone" th:field="*{phone}">
         </div>
         <div class="mb-3">
-            <label class="form-label">Gender</label>
-            <div class="form-check">
-                <input class="form-check-input" type="radio" name="gender" id="female" th:field="*{gender}" checked>
-                <label class="form-check-label" for="female">
-                    Female
-                </label>
-            </div>
-            <div class="form-check">
-                <input class="form-check-input" type="radio" name="gender" id="male" th:field="*{gender}">
-                <label class="form-check-label" for="male">
-                    Male
-                </label>
-            </div>
+            <label for="displayName" class="form-label">Display name</label>
+            <input type="text" class="form-control" id="displayName" th:field="*{displayName}">
         </div>
+        <div class="mb-3">
+            <label for="formFileLg" class="form-label">Profile picture</label>
+            <input class="form-control form-control-lg" id="formFileLg" type="file" th:field="*{profilePicture}" />
+        </div>
+        <div class="mb-3">
+            <label for="birthday">Birthday</label>
+            <input type="date" id="birthday" name="birthday" th:field="*{birthday}">
+        </div>
+        <div class="mb-3">
+            <label for="website" class="form-label">Website</label>
+            <input type="text" class="form-control" id="website" th:field="*{website}">
+        </div>
+        <div class="mb-3">
+            <label for="biography" class="form-label">Display name</label>
+            <input type="text" class="form-control" id="biography" th:field="*{biography}">
+        </div>
+        <div class="form-group form-check">
+            <input type="checkbox" class="form-check-input" id="exampleCheck1" th:field="*{privateProfile}">
+            <label class="form-check-label" for="exampleCheck1">Private profile</label>
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>
 

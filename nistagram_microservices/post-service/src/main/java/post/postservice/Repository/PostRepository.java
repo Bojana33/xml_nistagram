@@ -7,12 +7,11 @@ import post.postservice.Model.Post;
 import java.util.List;
 
 @Repository
-
 public interface PostRepository extends JpaRepository<Post, Long> {
     List<Post> findByUsernameOrderByCreatedAtDesc(String username);
     List<Post> findByIdInOrderByCreatedAtDesc(List<Long> ids);
-
-
-    void delete(Long id);
+//
+//
+//    void delete(Long id);
 }
 

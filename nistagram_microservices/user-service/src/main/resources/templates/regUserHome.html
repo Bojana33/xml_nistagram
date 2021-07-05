@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+</head>
+<body>
+<a href = "/user/registration">Register</a>
+<a th:href="${'/user/' + regUser.username + '/profile'}">Profile</a>
+</body>
+</html>

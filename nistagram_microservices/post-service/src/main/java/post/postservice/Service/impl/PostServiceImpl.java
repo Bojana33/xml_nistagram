@@ -37,16 +37,16 @@ public class PostServiceImpl implements PostService {
 
         return postToUpdate;
     }
-    public void delete(Long id, String username) throws Exception {
-        Post post = this.postRepository.getById(id);
-        if (post.getUsername() != username) {
-            throw new Exception("You can't delete this post.");
-        }
-        if (post == null) {
-            throw new Exception("Post doesn't exist.");
-        }
-    }
-
-    public List<Post> postsByUsername(String username){return postRepository.findByUsernameOrderByCreatedAtDesc(username);}
-    public List<Post> postsByIdIn(List<Long> ids){return postRepository.findByIdInOrderByCreatedAtDesc(ids);}
+//    public void delete(Long id, String username) throws Exception {
+//        Post post = this.postRepository.getById(id);
+//        if (post.getUsername() != username) {
+//            throw new Exception("You can't delete this post.");
+//        }
+//        if (post == null) {
+//            throw new Exception("Post doesn't exist.");
+//        }
+//    }
+//
+//    public List<Post> postsByUsername(String username){return postRepository.findByUsernameOrderByCreatedAtDesc(username);}
+//    public List<Post> postsByIdIn(List<Long> ids){return postRepository.findByIdInOrderByCreatedAtDesc(ids);}
 }
