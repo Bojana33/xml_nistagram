@@ -85,6 +85,9 @@ public class User implements Serializable {
         @OneToMany(mappedBy = "receiver", targetEntity = Request.class)
         private Set<Request> receivedRequests = new HashSet<>();
 
+        @OneToMany(mappedBy = "verification_sender", targetEntity = VerificationRequest.class)
+        private Set<VerificationRequest> verificationRequests = new HashSet<>();
+
         @ElementCollection
         private Set<String> blockedProfiles;
 

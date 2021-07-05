@@ -1,12 +1,12 @@
 package user.userservice.Controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import user.userservice.Model.User;
 import user.userservice.Service.UserService;
+import user.userservice.Service.VerificationRequestService;
 
 import java.util.List;
 import java.util.Set;
@@ -15,6 +15,7 @@ import java.util.Set;
 public class UserController {
 
     private UserService userService;
+    private VerificationRequestService verificationService;
 
     @Autowired
     public UserController(UserService userService) {
