@@ -48,6 +48,9 @@ public class User implements Serializable {
         @Column
         private Gender gender;
 
+        @OneToOne
+        private Profile profile;
+
         @Column
         private String displayName;
 

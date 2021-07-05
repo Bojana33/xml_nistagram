@@ -11,7 +11,7 @@ import javax.persistence.Entity;
 @Setter
 @Entity
 @DiscriminatorValue("Verified Profile")
-public class VerifiedProfile extends User {
+public class VerifiedProfile extends Profile {
 
     @Column
     private CategoryType category;
