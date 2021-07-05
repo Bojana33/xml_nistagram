@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import user.userservice.Model.User;
+import user.userservice.Model.VerificationRequest;
 import user.userservice.Service.UserService;
 import user.userservice.Service.VerificationRequestService;
 
@@ -39,6 +40,11 @@ public class UserController {
     @GetMapping(value = "/{username}")
     public ResponseEntity<User> getUser(@PathVariable String username){
         return new ResponseEntity<>(this.userService.findByUsername(username), HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/verificationRequests")
+    public ResponseEntity<List<VerificationRequest>> showVerificationRequests() {
+        return new ResponseEntity<>(this.verificationService.findAll(), HttpStatus.OK);
     }
 
     @PostMapping(value = "/updateProfile")

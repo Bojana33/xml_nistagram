@@ -2,7 +2,6 @@ package user.userservice.Service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 import user.userservice.Model.VerificationRequest;
 import user.userservice.Repository.VerificationRequestRepository;
 import user.userservice.Service.VerificationRequestService;
@@ -13,9 +12,6 @@ import java.util.List;
 public class VerificationRequestServiceImpl implements VerificationRequestService {
 
     private VerificationRequestRepository verificationRequestRepository;
-
-    @Autowired
-    private RestTemplate restTemplate;
 
     @Autowired
     public VerificationRequestServiceImpl(VerificationRequestRepository verificationRequestRepository) {

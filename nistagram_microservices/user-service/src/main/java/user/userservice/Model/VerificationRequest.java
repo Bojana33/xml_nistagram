@@ -27,8 +27,8 @@ public class VerificationRequest implements Serializable {
     @Column
     private Boolean accepted;
 
-    @ManyToOne(targetEntity = User.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "verification_sender_id", nullable = false, referencedColumnName = "id")
+    @OneToOne(targetEntity = User.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "verification_sender_id", referencedColumnName = "id")
     private User verification_sender;
 
 }

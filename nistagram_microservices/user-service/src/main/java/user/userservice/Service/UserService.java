@@ -15,4 +15,6 @@ public interface UserService {
     User privacySettings(String username, Boolean tagMe, Boolean messagesFromUnfollowers, Boolean privateProfile) throws Exception;
     void blockUser(String usernameBlocks, String usernameToBlock);
     User notificationSettings(String username, Boolean messageNotification, Boolean postNotification, Boolean commentNotification,Boolean followNotification) throws Exception;
+
+
 }
