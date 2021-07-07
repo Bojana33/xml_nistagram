@@ -106,7 +106,7 @@ public class UserController {
 
     @PostMapping(value = "{receiver}/profile/handleRequests")
     public ResponseEntity<String> handleRequests(@PathVariable String receiver, String sender, Request request) {
-        this.userService.handleRequest(receiver, sender, request);
+        this.userService.handleRequests(receiver, sender, request);
         return new ResponseEntity<>("Request successfully resolved.", HttpStatus.OK);
     }
 }

@@ -105,7 +105,7 @@ public class UserServiceImpl implements UserService {
         return receiver;
     }
 
-    public User handleRequest(String receiver, String sender, Request request) {
+    public User handleRequests(String receiver, String sender, Request request) {
         if (request.getAccepted() == true) {
             User receiverFollowers = this.userRepository.findByUsername(receiver);
             receiverFollowers.getReceiverFollowers().add(sender);
