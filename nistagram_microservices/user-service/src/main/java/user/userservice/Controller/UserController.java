@@ -1,15 +1,11 @@
 package user.userservice.Controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
-import org.springframework.data.repository.support.Repositories;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import user.userservice.Model.Request;
 import user.userservice.Model.User;
-import user.userservice.Model.UserRole;
 import user.userservice.Service.UserService;
 
 import java.util.List;
@@ -90,23 +86,23 @@ public class UserController {
 
     @GetMapping(value = "{username}/profile/getFollowers")
     public ResponseEntity<Set<String>> getFollowers(@PathVariable String username) {
-        return new ResponseEntity<>(this.userService.findByUsername(username).getSenderFollowers(), HttpStatus.OK);
+        return new ResponseEntity<>(this.userService.findByUsername(username).getFollowers(), HttpStatus.OK);
     }
 
     @GetMapping(value = "{username}/profile/getRequests")
-    public ResponseEntity<Set<String>> getRequests(@PathVariable String sender) {
-        return new ResponseEntity<>(this.userService.findByUsername(sender).getRequests(), HttpStatus.OK);
+    public ResponseEntity<Set<Request>> getRequests(@PathVariable String sender) {
+        return new ResponseEntity<>(this.userService.findByUsername(sender).getReceivedRequests(), HttpStatus.OK);
     }
 
     @PostMapping(value = "{sender}/profile/{receiver}/follow")
-    public ResponseEntity<String> follow(@PathVariable String sender, @PathVariable User receiver){
-        this.userService.follow(sender, receiver);
-        return new ResponseEntity<>("mmlccjfj", HttpStatus.OK);
+    public ResponseEntity<String> followUser(@PathVariable String sender, @PathVariable String receiver){
+        this.userService.followUser(sender, receiver);
+        return new ResponseEntity<>("Request is sent", HttpStatus.OK);
     }
 
-    @PostMapping(value = "{receiver}/profile/handleRequests")
-    public ResponseEntity<String> handleRequests(@PathVariable String receiver, String sender, Request request) {
-        this.userService.handleRequests(receiver, sender, request);
+    @PostMapping(value = "{receiver}/profile/{sender}/handleRequests/{reqId}/{status}")
+    public ResponseEntity<String> handleRequests(@PathVariable String receiver, @PathVariable String sender,@PathVariable Long reqId,@PathVariable Boolean status) {
+        this.userService.handleRequests(receiver, sender, reqId, status);
         return new ResponseEntity<>("Request successfully resolved.", HttpStatus.OK);
     }
 }

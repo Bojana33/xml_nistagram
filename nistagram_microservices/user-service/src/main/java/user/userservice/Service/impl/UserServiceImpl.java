@@ -1,11 +1,12 @@
 package user.userservice.Service.impl;
 
-import org.apache.logging.log4j.message.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import user.userservice.Model.Request;
 import user.userservice.Model.User;
+import user.userservice.Repository.RequestRepository;
 import user.userservice.Repository.UserRepository;
+import user.userservice.Service.RequestService;
 import user.userservice.Service.UserService;
 
 import java.util.List;
@@ -14,10 +15,14 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
 
     private UserRepository userRepository;
+    private RequestService requestService;
+    private RequestRepository requestRepository;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository){
+    public UserServiceImpl(RequestRepository requestRepository, UserRepository userRepository, RequestService requestService){
         this.userRepository = userRepository;
+        this.requestService = requestService;
+        this.requestRepository = requestRepository;
     }
 
     @Override
@@ -90,35 +95,42 @@ public class UserServiceImpl implements UserService {
         return userToUpdate;
     }
 
-    public User follow(String sender, User receiver) {
-        if (receiver.getPrivateProfile() == false) {
-            User senderFollowers = this.userRepository.findByUsername(sender);
-            senderFollowers.getSenderFollowers().add(String.valueOf(receiver));
+    public void followUser(String sender, String receiver) {
+        User user = this.userRepository.findByUsername(receiver);
+        User senderFollowers = this.userRepository.findByUsername(sender);
+        if (user.getPrivateProfile() == false) {
+            senderFollowers.getFollowers().add(receiver);
             this.userRepository.save(senderFollowers);
             //bidirekciono
-            User receiverFollowers = this.userRepository.findByUsername(String.valueOf(receiver));
-            receiverFollowers.getReceiverFollowers().add(sender);
-            this.userRepository.save(receiverFollowers);
+            user.getFollowers().add(sender);
+        } else{
+            Request request = new Request();
+            request.setReceiver(user);
+            request.setSender(senderFollowers);
+            request.setAccepted(false);
+            this.requestService.create(request);
+            user.getReceivedRequests().add(request);
         }
-        User userRequests = this.userRepository.findByUsername(String.valueOf(receiver));
-        userRequests.getRequests().add(String.valueOf(sender));
-        return receiver;
+        this.userRepository.save(user);
     }
 
-    public User handleRequests(String receiver, String sender, Request request) {
-        if (request.getAccepted() == true) {
-            User receiverFollowers = this.userRepository.findByUsername(receiver);
-            receiverFollowers.getReceiverFollowers().add(sender);
+    public void handleRequests(String receiver, String sender, Long id, Boolean status) {
+        Request request = this.requestService.findOne(id);
+        request.setAccepted(status);
+        User receiverFollowers = this.userRepository.findByUsername(receiver);
+        User senderFollowers = this.userRepository.findByUsername(sender);
+        this.requestRepository.save(request);
+        if (request.getAccepted()) {
+            receiverFollowers.getFollowers().add(sender);
+            this.requestRepository.deleteById(id);
             this.userRepository.save(receiverFollowers);
             //bidirekciono
-            User senderFollowers = this.userRepository.findByUsername(sender);
-            senderFollowers.getSenderFollowers().add(receiver);
+            senderFollowers.getFollowers().add(receiver);
             this.userRepository.save(senderFollowers);
-
         }
-        User userRequests = this.userRepository.findByUsername(receiver);
-        userRequests.getRequests().remove(sender);
-        return null;
+        else{
+            this.requestRepository.deleteById(id);
+        }
     }
 
     @Override
