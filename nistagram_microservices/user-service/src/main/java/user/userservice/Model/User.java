@@ -1,9 +1,6 @@
 package user.userservice.Model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -87,6 +84,15 @@ public class User implements Serializable {
 
         @ElementCollection
         private Set<String> blockedProfiles;
+
+        @ElementCollection
+        private Set<String> senderFollowers;
+
+        @ElementCollection
+        private Set<String> receiverFollowers;
+
+        @ElementCollection
+        private Set<String> requests;
 
         @Column
         private Boolean followNotification = Boolean.TRUE;

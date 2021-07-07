@@ -1,7 +1,9 @@
 package user.userservice.Service.impl;
 
+import org.apache.logging.log4j.message.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import user.userservice.Model.Request;
 import user.userservice.Model.User;
 import user.userservice.Repository.UserRepository;
 import user.userservice.Service.UserService;
@@ -86,6 +88,37 @@ public class UserServiceImpl implements UserService {
         userToUpdate.setMessageNotification(messageNotification);
         this.userRepository.save(userToUpdate);
         return userToUpdate;
+    }
+
+    public User follow(String sender, User receiver) {
+        if (receiver.getPrivateProfile() == false) {
+            User senderFollowers = this.userRepository.findByUsername(sender);
+            senderFollowers.getSenderFollowers().add(String.valueOf(receiver));
+            this.userRepository.save(senderFollowers);
+            //bidirekciono
+            User receiverFollowers = this.userRepository.findByUsername(String.valueOf(receiver));
+            receiverFollowers.getReceiverFollowers().add(sender);
+            this.userRepository.save(receiverFollowers);
+        }
+        User userRequests = this.userRepository.findByUsername(String.valueOf(receiver));
+        userRequests.getRequests().add(String.valueOf(sender));
+        return receiver;
+    }
+
+    public User handleRequest(String receiver, String sender, Request request) {
+        if (request.getAccepted() == true) {
+            User receiverFollowers = this.userRepository.findByUsername(receiver);
+            receiverFollowers.getReceiverFollowers().add(sender);
+            this.userRepository.save(receiverFollowers);
+            //bidirekciono
+            User senderFollowers = this.userRepository.findByUsername(sender);
+            senderFollowers.getSenderFollowers().add(receiver);
+            this.userRepository.save(senderFollowers);
+
+        }
+        User userRequests = this.userRepository.findByUsername(receiver);
+        userRequests.getRequests().remove(sender);
+        return null;
     }
 
     @Override
