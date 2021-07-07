@@ -5,9 +5,11 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.data.repository.support.Repositories;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import user.userservice.Model.Request;
 import user.userservice.Model.User;
+import user.userservice.Model.UserRole;
 import user.userservice.Service.UserService;
 
 import java.util.List;
@@ -97,9 +99,9 @@ public class UserController {
     }
 
     @PostMapping(value = "{sender}/profile/{receiver}/follow")
-    public ResponseEntity<String> follow(@PathVariable String sender, @PathVariable User receiver) {
+    public ResponseEntity<String> follow(@PathVariable String sender, @PathVariable User receiver){
         this.userService.follow(sender, receiver);
-        return new ResponseEntity<>("", HttpStatus.OK);
+        return new ResponseEntity<>("mmlccjfj", HttpStatus.OK);
     }
 
     @PostMapping(value = "{receiver}/profile/handleRequests")
