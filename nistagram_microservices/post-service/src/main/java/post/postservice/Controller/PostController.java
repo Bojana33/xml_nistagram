@@ -7,6 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 import post.postservice.DTO.Image;
 import post.postservice.Model.EmoticonType;
 import post.postservice.Model.Post;
@@ -26,23 +27,27 @@ public class PostController {
     }
 
     @PostMapping(value = "/upload")
-    public String createPost(@ModelAttribute Post post,
+    public ModelAndView createPost(@ModelAttribute Post post,
                              @RequestParam("file") MultipartFile file,
                              @RequestParam("caption") String caption,
                              @RequestParam("username") String username,
                              @RequestParam("image") Image image) {
         postService.savePost(post, file, caption, username, image);
-        return "post.html";
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("post");
+        return modelAndView;
     }
 
     @GetMapping("/save")
-    public String create(@ModelAttribute Post post,
+    public ModelAndView create(@ModelAttribute Post post,
                          BindingResult errors, Model model) throws Exception {
         Post postToSave = postService.create(post);
         model.addAttribute("postToSave", postToSave);
         postToSave.setUpdatedAt(new Date());
         postToSave.setCreatedAt(new Date());
-        return "addpost.html";
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("addpost");
+        return modelAndView;
     }
 
     @DeleteMapping("/delete/{id}")
@@ -52,9 +57,9 @@ public class PostController {
     }
 
     @GetMapping("/posts/{username}")
-    public ResponseEntity<?> findUserPosts(@PathVariable("username") String username) {
+    public ResponseEntity<List<Post>> findUserPosts(@PathVariable("username") String username) {
         List<Post> posts = postService.postsByUsername(username);
-        return ResponseEntity.ok(posts);
+        return new ResponseEntity(posts, HttpStatus.OK);
     }
 
     /*@PostMapping()
@@ -83,16 +88,28 @@ public class PostController {
 //        return ResponseEntity.ok(posts);
 //    }
 
-    @GetMapping(value = "/likes")
+    @GetMapping(value = "/{username}/likes")
     public ResponseEntity<?> findByLike(@PathVariable("emoticonType") EmoticonType emoticonType, String username) throws Exception{
         List<Post> likes = postService.findByLike(emoticonType, username);
         return ResponseEntity.ok(likes);
     }
 
-    @GetMapping(value = "/dislikes")
+    @GetMapping(value = "/{username}/dislikes")
     public ResponseEntity<?> findByDislike(@PathVariable("emoticonType") EmoticonType emoticonType, String username) throws Exception{
         List<Post> dislikes = postService.findByDislike(emoticonType, username);
         return ResponseEntity.ok(dislikes);
+    }
+
+    @PostMapping(value = "/{username}/like/{id}")
+    public ResponseEntity<String> likePost(@PathVariable String username, @PathVariable Long id){
+        this.postService.likePost(username,id);
+        return new ResponseEntity<>("Post is liked.", HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/{username}/dislike/{id}")
+    public ResponseEntity<String> dislikePost(@PathVariable String username,@PathVariable Long id){
+        this.postService.dislikePost(username,id);
+        return new ResponseEntity<>("Post is disliked.", HttpStatus.OK);
     }
 }
 

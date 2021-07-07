@@ -34,18 +34,14 @@ public class Post implements Serializable {
     @Column
     private String username;
 
-//    @ElementCollection
-//    private Collection<String> imageUrl = new ArrayList<String>();
+    @ElementCollection
+    private Collection<String> imageUrl;
 
-    @ManyToMany
-    @JoinTable(name="likes", joinColumns = @JoinColumn(name="UserId",referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "likesId", referencedColumnName = "id"))
-    private Set<Post> likes = new HashSet<>();
+    @ElementCollection
+    private Set<String> likes = new HashSet<>();
 
-    @ManyToMany
-    @JoinTable(name="dislikes", joinColumns = @JoinColumn(name="UserId",referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "dislikesId", referencedColumnName = "id"))
-    private Set<Post> dislikes = new HashSet<>();
+    @ElementCollection
+    private Set<String> dislikes = new HashSet<>();
 }
 
 

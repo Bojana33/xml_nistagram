@@ -14,11 +14,13 @@ import java.io.IOException;
 import java.util.Base64;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PostServiceImpl implements PostService {
 
     private PostRepository postRepository;
+    private EmoticonServiceImpl emoticonServiceImpl;
 
     @Autowired
     public PostServiceImpl(PostRepository postRepository) {
@@ -114,6 +116,22 @@ public class PostServiceImpl implements PostService {
             throw new Exception("There are no disliked posts.");
         }
         return null;
+    }
+
+    @Override
+    public void likePost(String username, Long id) {
+        Post post = this.postRepository.getById(id);
+        post.getLikes().add(username);
+        emoticonServiceImpl.create(username,EmoticonType.LIKE);
+        this.postRepository.save(post);
+    }
+
+    @Override
+    public void dislikePost(String username, Long id) {
+        Post post = this.postRepository.getById(id);
+        post.getDislikes().add(username);
+        emoticonServiceImpl.create(username,EmoticonType.DISLIKE);
+        this.postRepository.save(post);
     }
 
 //    public void delete(Long id, String username) throws Exception {

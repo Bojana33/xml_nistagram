@@ -5,6 +5,7 @@ import org.springframework.stereotype.Repository;
 import post.postservice.Model.Post;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface PostRepository extends JpaRepository<Post, Long> {
@@ -15,6 +16,9 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     List<Post> findByLikes(String username);
     List<Post> findByDislikes(String username);
 
-//    void delete(Long id);
+    @Override
+    Post getById(Long id);
+
+    //    void delete(Long id);
 }
 

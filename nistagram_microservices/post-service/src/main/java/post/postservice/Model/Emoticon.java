@@ -21,4 +21,7 @@ public class Emoticon implements Serializable {
 
     @Column
     private EmoticonType emoticonType;
+
+    @Column
+    private String username;
 }
