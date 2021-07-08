@@ -1,9 +1,8 @@
 package user.userservice.Model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -15,6 +14,7 @@ import java.util.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,property = "id")
 @Table(name = "users")
 public class User implements Serializable {
         @Id
@@ -87,6 +87,9 @@ public class User implements Serializable {
 
         @ElementCollection
         private Set<String> blockedProfiles;
+
+        @ElementCollection
+        private Set<String> followers;
 
         @Column
         private Boolean followNotification = Boolean.TRUE;

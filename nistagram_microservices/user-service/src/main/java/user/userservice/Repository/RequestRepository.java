@@ -6,4 +6,7 @@ import user.userservice.Model.Request;
 
 @Repository
 public interface RequestRepository extends JpaRepository<Request,Long> {
+
+    @Override
+    Request getById(Long id);
 }

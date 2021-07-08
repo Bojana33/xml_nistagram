@@ -22,11 +22,11 @@ public class Request implements Serializable {
     @Column
     private Boolean accepted;
 
-    @ManyToOne(targetEntity = User.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(targetEntity = User.class, fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
     @JoinColumn(name = "sender_id", nullable = false, referencedColumnName = "id")
     private User sender;
 
-    @ManyToOne(targetEntity = User.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(targetEntity = User.class, fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
     @JoinColumn(name = "receiver_id", nullable = false, referencedColumnName = "id")
     private User receiver;
 }

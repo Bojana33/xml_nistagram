@@ -2,8 +2,11 @@ package user.userservice.Service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import user.userservice.Model.Request;
 import user.userservice.Model.User;
+import user.userservice.Repository.RequestRepository;
 import user.userservice.Repository.UserRepository;
+import user.userservice.Service.RequestService;
 import user.userservice.Service.UserService;
 
 import java.util.List;
@@ -12,10 +15,14 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
 
     private UserRepository userRepository;
+    private RequestService requestService;
+    private RequestRepository requestRepository;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository){
+    public UserServiceImpl(RequestRepository requestRepository, UserRepository userRepository, RequestService requestService){
         this.userRepository = userRepository;
+        this.requestService = requestService;
+        this.requestRepository = requestRepository;
     }
 
     @Override
@@ -86,6 +93,44 @@ public class UserServiceImpl implements UserService {
         userToUpdate.setMessageNotification(messageNotification);
         this.userRepository.save(userToUpdate);
         return userToUpdate;
+    }
+
+    public void followUser(String sender, String receiver) {
+        User user = this.userRepository.findByUsername(receiver);
+        User senderFollowers = this.userRepository.findByUsername(sender);
+        if (user.getPrivateProfile() == false) {
+            senderFollowers.getFollowers().add(receiver);
+            this.userRepository.save(senderFollowers);
+            //bidirekciono
+            user.getFollowers().add(sender);
+        } else{
+            Request request = new Request();
+            request.setReceiver(user);
+            request.setSender(senderFollowers);
+            request.setAccepted(false);
+            this.requestService.create(request);
+            user.getReceivedRequests().add(request);
+        }
+        this.userRepository.save(user);
+    }
+
+    public void handleRequests(String receiver, String sender, Long id, Boolean status) {
+        Request request = this.requestService.findOne(id);
+        request.setAccepted(status);
+        User receiverFollowers = this.userRepository.findByUsername(receiver);
+        User senderFollowers = this.userRepository.findByUsername(sender);
+        this.requestRepository.save(request);
+        if (request.getAccepted()) {
+            receiverFollowers.getFollowers().add(sender);
+            this.requestRepository.deleteById(id);
+            this.userRepository.save(receiverFollowers);
+            //bidirekciono
+            senderFollowers.getFollowers().add(receiver);
+            this.userRepository.save(senderFollowers);
+        }
+        else{
+            this.requestRepository.deleteById(id);
+        }
     }
 
     @Override
