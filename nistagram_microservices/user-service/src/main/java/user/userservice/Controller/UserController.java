@@ -58,7 +58,8 @@ public class UserController {
     }
 
     @PostMapping(value = "/{username}/sendVerificationRequest")
-    public ResponseEntity<String> sendVerificationRequest(@PathVariable String username, @RequestParam("category") CategoryType category) throws Exception {
+    public ResponseEntity<String> sendVerificationRequest(@PathVariable String username, @RequestParam("category") CategoryType category,
+                                                          @RequestParam("document") String document) throws Exception {
         User user = userService.findByUsername(username);
         if (user == null) {
             return new ResponseEntity<String>("User with this username does not exist",
@@ -71,6 +72,7 @@ public class UserController {
         VerificationRequest vr = new VerificationRequest();
         vr.setVerification_sender(user);
         //vr.setOfficialDocument(user.getOfficialDocument());
+        vr.setOfficialDocument(document);
         vr.setCategory(category);
         this.verificationService.create(vr);
         user.setVerificationRequest(vr);

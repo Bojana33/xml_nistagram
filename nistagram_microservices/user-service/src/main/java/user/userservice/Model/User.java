@@ -40,10 +40,10 @@ public class User implements Serializable {
         private String email;
 
         @Column
-        private Boolean active;
+        private Boolean active = false;
 
         @Column
-        private UserRole role;
+        private UserRole role = UserRole.USER;
 
         @Column
         private String phone;
@@ -71,7 +71,7 @@ public class User implements Serializable {
         private Boolean verified = Boolean.FALSE;
 
         @Column
-        private Boolean privateProfile;
+        private Boolean privateProfile = false;
 
         @Column
         private Boolean deactivated =Boolean.FALSE;
