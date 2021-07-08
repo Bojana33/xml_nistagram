@@ -9,15 +9,15 @@ import post.postservice.Service.LocationService;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/location")
+@RequestMapping(value = "/")
 public class LocationController {
 
     @Autowired
     public LocationService locationService;
 
-    @GetMapping
-    public ResponseEntity<?> findByName(@PathVariable("name") List<String> names) {
-        List<Location> locations = locationService.findByName(names);
+    @GetMapping(value = "/findByName")
+    public ResponseEntity<?> findByName(@PathVariable("name") String name) {
+        List<Location> locations = locationService.findByName(name);
         return ResponseEntity.ok(locations);
     }
 

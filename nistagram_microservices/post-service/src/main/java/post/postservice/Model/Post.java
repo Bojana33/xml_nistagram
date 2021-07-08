@@ -7,6 +7,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Data
@@ -32,10 +34,14 @@ public class Post implements Serializable {
     @Column
     private String username;
 
-//    @ElementCollection
-//    private Collection<String> imageUrl = new ArrayList<String>();
+    @ElementCollection
+    private Collection<String> imageUrl;
 
+    @ElementCollection
+    private Set<String> likes = new HashSet<>();
 
+    @ElementCollection
+    private Set<String> dislikes = new HashSet<>();
 }
 
 

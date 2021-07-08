@@ -1,4 +1,6 @@
 package post.postservice.Model;
 
-public enum EmoticonType { LIKE, DISLIKE
+import java.io.Serializable;
+
+public enum EmoticonType implements Serializable { LIKE, DISLIKE
 }
