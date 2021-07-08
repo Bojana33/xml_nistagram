@@ -13,7 +13,7 @@ public class LocationServiceImpl implements LocationService {
     @Autowired
     private LocationService locationService;
 
-    public List<Location> findByName(List<String> names) {
-        return locationService.findByName(names);
+    public List<Location> findByName(String name) {
+        return locationService.findByName(name);
     }
 }
