@@ -21,4 +21,5 @@ public interface UserService {
     void followUser(String sender, String receiver);
     void handleRequests(String receiver, String sender, Long id, Boolean status) throws Exception;
     void unfollowUser(String username, String usernameToUnfolow);
+
 }

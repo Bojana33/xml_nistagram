@@ -5,8 +5,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import user.userservice.Model.Request;
+import user.userservice.Model.CategoryType;
 import user.userservice.Model.User;
+import user.userservice.Model.UserRole;
+import user.userservice.Model.VerificationRequest;
 import user.userservice.Service.UserService;
+import user.userservice.Service.VerificationRequestService;
 
 import java.util.List;
 import java.util.Set;
@@ -15,10 +19,12 @@ import java.util.Set;
 public class UserController {
 
     private UserService userService;
+    private VerificationRequestService verificationService;
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService, VerificationRequestService verificationService) {
         this.userService = userService;
+        this.verificationService = verificationService;
     }
 
     @PostMapping(value = "/saveUser")
@@ -38,6 +44,74 @@ public class UserController {
     @GetMapping(value = "/{username}")
     public ResponseEntity<User> getUser(@PathVariable String username) {
         return new ResponseEntity<>(this.userService.findByUsername(username), HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/{username}/verificationRequests")
+    public ResponseEntity<List<VerificationRequest>> showVerificationRequests(@PathVariable String username) throws Exception{
+        User user = this.userService.findByUsername(username);
+        if (user == null) {
+            throw new Exception("User does not exist");
+        }
+        if (user.getRole()!= UserRole.ADMIN) {
+            throw new Exception("Access denied");
+        }
+        return new ResponseEntity<>(this.verificationService.findAll(), HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/{username}/sendVerificationRequest")
+    public ResponseEntity<String> sendVerificationRequest(@PathVariable String username, @RequestParam("category") CategoryType category) throws Exception {
+        User user = userService.findByUsername(username);
+        if (user == null) {
+            return new ResponseEntity<String>("User with this username does not exist",
+                    HttpStatus.BAD_REQUEST);
+        }
+        if (user.getVerificationRequest() != null) {
+            return new ResponseEntity<String>("Verification request already sent.",
+                    HttpStatus.BAD_REQUEST);
+        }
+        VerificationRequest vr = new VerificationRequest();
+        vr.setVerification_sender(user);
+        //vr.setOfficialDocument(user.getOfficialDocument());
+        vr.setCategory(category);
+        this.verificationService.create(vr);
+        user.setVerificationRequest(vr);
+        this.userService.update(user);
+
+        return new ResponseEntity<String>("Verification request sent", HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/saveVerificationRequest")
+    public ResponseEntity<String> createVerificationRequest(@RequestBody VerificationRequest verificationRequest) throws Exception {
+        if (verificationService.findOne(verificationRequest.getId()) != null) {
+            return new ResponseEntity<String>("Verification request with this id already exist", HttpStatus.BAD_REQUEST);
+        }
+        this.verificationService.create(verificationRequest);
+        return new ResponseEntity<String>("Verification request is created", HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/verificationRequests/{id}")
+    private ResponseEntity<VerificationRequest> getVerificationRequest(@PathVariable Long id) {
+        return new ResponseEntity<>(this.verificationService.findOne(id), HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/{username}/verificationRequests/{id}")
+    public ResponseEntity<String> approveVerificationRequest(
+            @PathVariable String username, @PathVariable Long id) throws Exception{
+        User user = userService.findByUsername(username);
+        if (user == null) {
+            return new ResponseEntity<String>("User with this username does not exist",
+                    HttpStatus.BAD_REQUEST);
+        }
+        if (user.getVerificationRequest() != null) {
+            return new ResponseEntity<String>("Verification request already sent.",
+                    HttpStatus.BAD_REQUEST);
+        }
+        VerificationRequest vr = this.verificationService.findOne(id);
+        vr.setAccepted(true);
+        this.verificationService.update(vr);
+        vr.getVerification_sender().setVerified(true);
+        this.userService.update(vr.getVerification_sender());
+        return new ResponseEntity<>("Verification request approved", HttpStatus.OK);
     }
 
     @PostMapping(value = "/updateProfile")
