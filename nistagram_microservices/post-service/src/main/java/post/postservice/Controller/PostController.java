@@ -8,11 +8,14 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import post.postservice.DTO.Image;
 import post.postservice.Model.EmoticonType;
 import post.postservice.Model.Post;
+import post.postservice.Payload.PostRequest;
 import post.postservice.Service.PostService;
 
+import java.net.URI;
 import java.util.Date;
 import java.util.List;
 
@@ -27,15 +30,9 @@ public class PostController {
     }
 
     @PostMapping(value = "/upload")
-    public ModelAndView createPost(@ModelAttribute Post post,
-                             @RequestParam("file") MultipartFile file,
-                             @RequestParam("caption") String caption,
-                             @RequestParam("username") String username,
-                             @RequestParam("image") Image image) {
-        postService.savePost(post, file, caption, username, image);
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("post");
-        return modelAndView;
+    public ResponseEntity<?> createPost(@RequestBody PostRequest postRequest) {
+        Post post = postService.savePost(postRequest);
+        return new ResponseEntity(post, HttpStatus.OK);
     }
 
     @GetMapping("/save")
@@ -57,7 +54,7 @@ public class PostController {
     }
 
     @GetMapping("/posts/{username}")
-    public ResponseEntity<List<Post>> findUserPosts(@PathVariable("username") String username) {
+    public ResponseEntity<?> findUserPosts(@PathVariable("username") String username) {
         List<Post> posts = postService.postsByUsername(username);
         return new ResponseEntity(posts, HttpStatus.OK);
     }
