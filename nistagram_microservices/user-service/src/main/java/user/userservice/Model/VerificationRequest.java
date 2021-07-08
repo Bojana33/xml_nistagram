@@ -26,7 +26,7 @@ public class VerificationRequest implements Serializable {
     private String officialDocument;
 
     @Column
-    private Boolean accepted;
+    private Boolean accepted = false;
 
     @OneToOne(targetEntity = User.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "verification_sender_id", referencedColumnName = "id")
