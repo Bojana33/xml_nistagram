@@ -16,13 +16,11 @@ public class UserServiceImpl implements UserService {
 
     private UserRepository userRepository;
     private RequestService requestService;
-    private RequestRepository requestRepository;
 
     @Autowired
-    public UserServiceImpl(RequestRepository requestRepository, UserRepository userRepository, RequestService requestService){
+    public UserServiceImpl(UserRepository userRepository, RequestService requestService){
         this.userRepository = userRepository;
         this.requestService = requestService;
-        this.requestRepository = requestRepository;
     }
 
     @Override
@@ -82,6 +80,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public void unblockUser(String usernameUnblocking, String usernameToUnblock) {
+        User userUnblocking = this.userRepository.findByUsername(usernameUnblocking);
+        userUnblocking.getBlockedProfiles().remove(usernameToUnblock);
+        this.userRepository.save(userUnblocking);
+    }
+
+    @Override
     public User notificationSettings(String username, Boolean messageNotification, Boolean postNotification, Boolean commentNotification,Boolean followNotification) throws Exception {
         User userToUpdate = this.userRepository.findByUsername(username);
         if (userToUpdate == null){
@@ -114,23 +119,30 @@ public class UserServiceImpl implements UserService {
         this.userRepository.save(user);
     }
 
-    public void handleRequests(String receiver, String sender, Long id, Boolean status) {
+    public void handleRequests(String receiver, String sender, Long id, Boolean status) throws Exception {
         Request request = this.requestService.findOne(id);
         request.setAccepted(status);
         User receiverFollowers = this.userRepository.findByUsername(receiver);
         User senderFollowers = this.userRepository.findByUsername(sender);
-        this.requestRepository.save(request);
+        this.requestService.update(request);
         if (request.getAccepted()) {
             receiverFollowers.getFollowers().add(sender);
-            this.requestRepository.deleteById(id);
+            this.requestService.delete(id);
             this.userRepository.save(receiverFollowers);
             //bidirekciono
             senderFollowers.getFollowers().add(receiver);
             this.userRepository.save(senderFollowers);
         }
         else{
-            this.requestRepository.deleteById(id);
+            this.requestService.delete(id);
         }
+    }
+
+    @Override
+    public void unfollowUser(String username, String usernameToUnfollow) {
+        User userUnfollows = this.userRepository.findByUsername(username);
+        userUnfollows.getFollowers().remove(usernameToUnfollow);
+        this.userRepository.save(userUnfollows);
     }
 
     @Override

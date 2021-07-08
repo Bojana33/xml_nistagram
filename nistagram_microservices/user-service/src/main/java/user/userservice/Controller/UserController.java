@@ -101,9 +101,21 @@ public class UserController {
     }
 
     @PostMapping(value = "{receiver}/profile/{sender}/handleRequests/{reqId}/{status}")
-    public ResponseEntity<String> handleRequests(@PathVariable String receiver, @PathVariable String sender,@PathVariable Long reqId,@PathVariable Boolean status) {
+    public ResponseEntity<String> handleRequests(@PathVariable String receiver, @PathVariable String sender,@PathVariable Long reqId,@PathVariable Boolean status) throws Exception {
         this.userService.handleRequests(receiver, sender, reqId, status);
         return new ResponseEntity<>("Request successfully resolved.", HttpStatus.OK);
+    }
+
+    @PostMapping(value = "{usernameUnfollowing}/profile/{usernameToUnfollow}/unfollow")
+    public ResponseEntity<String> unfollowUser(@PathVariable String usernameUnfollowing, @PathVariable String usernameToUnfollow){
+        this.userService.unfollowUser(usernameUnfollowing,usernameToUnfollow);
+        return new ResponseEntity<>("User is unfollowed.", HttpStatus.OK);
+    }
+
+    @PostMapping(value = "{usernameUnblocking}/profile/{usernameToUnblock}/unblock")
+    public ResponseEntity<String> unblockUser(@PathVariable String usernameUnblocking, @PathVariable String usernameToUnblock){
+        this.userService.unblockUser(usernameUnblocking,usernameToUnblock);
+        return new ResponseEntity<>("User is unblocked", HttpStatus.OK);
     }
 }
 
