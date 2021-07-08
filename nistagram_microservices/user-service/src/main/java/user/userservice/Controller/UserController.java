@@ -47,6 +47,20 @@ public class UserController {
         return new ResponseEntity<>(this.verificationService.findAll(), HttpStatus.OK);
     }
 
+    @PostMapping(value = "/saveVerificationRequest")
+    public ResponseEntity<String> VerificationRequest(@RequestBody VerificationRequest verificationRequest) throws Exception {
+        if (verificationService.findOne(verificationRequest.getId()) != null) {
+            return new ResponseEntity<String>("Verification request with this id already exist", HttpStatus.BAD_REQUEST);
+        }
+        this.verificationService.create(verificationRequest);
+        return new ResponseEntity<String>("Verification request is created", HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/verificationRequests/{id}")
+    private ResponseEntity<VerificationRequest> getVerificationRequest(@PathVariable Long id) {
+        return new ResponseEntity<>(this.verificationService.findOne(id), HttpStatus.OK);
+    }
+
     @PostMapping(value = "/updateProfile")
     public ResponseEntity<User> updateProfile(@RequestBody User user) throws Exception{
         if(this.userService.findByUsername(user.getUsername()) != null) {

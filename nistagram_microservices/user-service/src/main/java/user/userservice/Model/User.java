@@ -1,5 +1,7 @@
 package user.userservice.Model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,6 +19,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 @Table(name = "users")
 public class User implements Serializable {
         @Id
@@ -26,7 +29,7 @@ public class User implements Serializable {
         @Column
         private String username;
 
-        @Column
+        @Column(name = "name_")
         private String name;
 
         @Column
