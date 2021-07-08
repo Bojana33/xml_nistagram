@@ -19,8 +19,9 @@ public class UserController {
     private VerificationRequestService verificationService;
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService, VerificationRequestService verificationService) {
         this.userService = userService;
+        this.verificationService = verificationService;
     }
 
     @PostMapping(value = "/saveUser")

@@ -1,7 +1,5 @@
 package user.userservice.Model;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.*;
 
 import javax.persistence.*;
@@ -13,7 +11,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @Table(name = "verification_requests")
 public class VerificationRequest implements Serializable {
@@ -30,7 +28,7 @@ public class VerificationRequest implements Serializable {
     @Column
     private Boolean accepted;
 
-    @OneToOne(targetEntity = User.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToOne(targetEntity = User.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "verification_sender_id", referencedColumnName = "id")
     private User verification_sender;
 
