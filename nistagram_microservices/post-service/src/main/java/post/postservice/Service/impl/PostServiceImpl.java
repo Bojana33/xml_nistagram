@@ -23,8 +23,9 @@ public class PostServiceImpl implements PostService {
     private EmoticonServiceImpl emoticonServiceImpl;
 
     @Autowired
-    public PostServiceImpl(PostRepository postRepository) {
+    public PostServiceImpl(PostRepository postRepository, EmoticonServiceImpl emoticonServiceImpl) {
         this.postRepository = postRepository;
+        this.emoticonServiceImpl = emoticonServiceImpl;
     }
 
     @Override
@@ -95,27 +96,20 @@ public class PostServiceImpl implements PostService {
     }
 
 
-    public List<Post> findByLike(EmoticonType emoticonType, String username) throws Exception{
+    public List<Post> findByEmoticons(EmoticonType emoticonType, String username) throws Exception{
         List<Post> likedPosts = this.postRepository.findByLikes(username);
-        if (emoticonType == emoticonType.LIKE) {
-            return likedPosts;
-        }
-        else if(likedPosts == null) {
-            throw new Exception("There are no liked posts.");
-        }
-        return null;
-
-    }
-
-    public List<Post> findByDislike(EmoticonType emoticonType, String username) throws Exception{
         List<Post> dislikedPosts = this.postRepository.findByDislikes(username);
-        if(emoticonType == EmoticonType.DISLIKE){
+        if (emoticonType == emoticonType.LIKE) {
+            if(likedPosts == null) {
+                throw new Exception("There are no liked posts.");
+            }
+            return likedPosts;
+        } else {
+            if(dislikedPosts == null) {
+                throw new Exception("There are no disliked posts.");
+            }
             return dislikedPosts;
         }
-        if(dislikedPosts == null) {
-            throw new Exception("There are no disliked posts.");
-        }
-        return null;
     }
 
     @Override

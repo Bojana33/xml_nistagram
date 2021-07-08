@@ -88,16 +88,11 @@ public class PostController {
 //        return ResponseEntity.ok(posts);
 //    }
 
-    @GetMapping(value = "/{username}/likes")
-    public ResponseEntity<?> findByLike(@PathVariable("emoticonType") EmoticonType emoticonType, String username) throws Exception{
-        List<Post> likes = postService.findByLike(emoticonType, username);
+    //lajkovani ili dislajkovani
+    @GetMapping(value = "/{username}/likes/{emoticonType}")
+    public ResponseEntity<?> findByLike(@PathVariable EmoticonType emoticonType, @PathVariable String username) throws Exception{
+        List<Post> likes = postService.findByEmoticons(emoticonType, username);
         return ResponseEntity.ok(likes);
-    }
-
-    @GetMapping(value = "/{username}/dislikes")
-    public ResponseEntity<?> findByDislike(@PathVariable("emoticonType") EmoticonType emoticonType, String username) throws Exception{
-        List<Post> dislikes = postService.findByDislike(emoticonType, username);
-        return ResponseEntity.ok(dislikes);
     }
 
     @PostMapping(value = "/{username}/like/{id}")

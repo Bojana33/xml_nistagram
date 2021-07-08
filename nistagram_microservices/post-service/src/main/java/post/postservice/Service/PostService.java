@@ -23,9 +23,7 @@ public interface PostService {
 
     List<Post> postsByIdIn(List<Long> ids);
 
-    List<Post> findByLike(EmoticonType emoticonType, String username) throws Exception;
-
-    List<Post> findByDislike(EmoticonType emoticonType, String username) throws Exception;
+    List<Post> findByEmoticons(EmoticonType emoticonType, String username) throws Exception;
 
     void likePost(String username, Long id);
     void dislikePost(String username, Long id);
