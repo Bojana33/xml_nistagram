@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import user.userservice.Model.Request;
 import user.userservice.Model.User;
-import user.userservice.Repository.RequestRepository;
 import user.userservice.Repository.UserRepository;
 import user.userservice.Service.RequestService;
 import user.userservice.Service.UserService;
@@ -75,6 +74,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public void blockUser(String usernameBlocks, String usernameToBlock) {
         User userBlocks = this.userRepository.findByUsername(usernameBlocks);
+        User userToBlock = this.userRepository.findByUsername(usernameToBlock);
+        if (userBlocks.getFollowers().contains(usernameToBlock)){
+            unfollowUser(usernameBlocks,usernameToBlock);
+        }
+        if (userToBlock.getFollowers().contains(usernameBlocks)){
+            unfollowUser(usernameToBlock,usernameBlocks);
+        }
         userBlocks.getBlockedProfiles().add(usernameToBlock);
         this.userRepository.save(userBlocks);
     }
