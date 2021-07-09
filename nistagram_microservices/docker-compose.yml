@@ -3,7 +3,7 @@ version: '3.3'
 services:
 
     rabbitmq:
-      image: rabbitmq
+      image: rabbitmq:3-management-alpine
       container_name: rabbitmqContainer
       hostname: rabbitmq
       networks:
@@ -12,6 +12,7 @@ services:
               - rabbitmq
       ports:
         - 5672:5672
+        - 15672:15672
       volumes:
         - rabbitmq_volume:/var/lib/rabbitmq
 
@@ -117,7 +118,7 @@ services:
         PHOTO_ALIAS: photo-service
       ports:
         - 8079:8079
-        volumes:
+      volumes:
           - $HOME/.m2:/root/.m2
 
 volumes:
