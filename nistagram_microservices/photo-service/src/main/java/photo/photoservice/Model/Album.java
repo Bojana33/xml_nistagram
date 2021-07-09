@@ -31,6 +31,7 @@ public class Album implements Serializable {
     private Date createdAt;
 
     @OneToMany(mappedBy="album")
+
     private Set<Image> images;
 
 }

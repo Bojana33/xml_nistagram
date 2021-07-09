@@ -4,6 +4,7 @@ import org.springframework.web.multipart.MultipartFile;
 import post.postservice.DTO.Image;
 import post.postservice.Model.EmoticonType;
 import post.postservice.Model.Post;
+import post.postservice.Payload.PostRequest;
 
 import java.util.List;
 
@@ -15,7 +16,7 @@ public interface PostService {
 
     Post create(Post post);
 
-    Post savePost(Post post, MultipartFile file, String caption, String username, Image image);
+    Post savePost(PostRequest postRequest);
 
     Post findOne(Long id) throws Exception;
 
