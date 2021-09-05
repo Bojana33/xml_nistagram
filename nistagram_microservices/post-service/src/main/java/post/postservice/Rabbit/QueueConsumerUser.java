@@ -9,7 +9,7 @@ import post.postservice.DTO.User;
 public class QueueConsumerUser {
 
     @RabbitListener(queues = RabbitConfiguration.QUEUE)
-    public void listener(User user){
+public void listener(User user){
         System.out.println(user);
     }
 }
