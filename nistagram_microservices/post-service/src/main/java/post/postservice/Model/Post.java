@@ -25,6 +25,9 @@ public class Post implements Serializable {
     private Long id;
 
     @Column
+    private String name;
+
+    @Column
     private Date createdAt;
 
     @Column

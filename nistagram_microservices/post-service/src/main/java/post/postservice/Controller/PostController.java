@@ -3,7 +3,9 @@ package post.postservice.Controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -15,11 +17,17 @@ import post.postservice.Model.Post;
 import post.postservice.Payload.PostRequest;
 import post.postservice.Service.PostService;
 
-import java.net.URI;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
-@RestController
+@Controller
 public class PostController {
 
     private PostService postService;
@@ -29,11 +37,13 @@ public class PostController {
         this.postService = postService;
     }
 
-    @PostMapping(value = "/upload")
-    public ResponseEntity<?> createPost(@RequestBody PostRequest postRequest) {
-        Post post = postService.savePost(postRequest);
-        return new ResponseEntity(post, HttpStatus.OK);
-    }
+    public static String uploadDirectory = System.getProperty("images","/uploads");
+
+//    @PostMapping(value = "/upload")
+//    public ResponseEntity<?> createPost(@RequestParam PostRequest postRequest) {
+//        Post post = postService.savePost(postRequest);
+//        return new ResponseEntity(post, HttpStatus.OK);
+//    }
 
     @GetMapping("/save")
     public ModelAndView create(@ModelAttribute Post post,
@@ -45,6 +55,28 @@ public class PostController {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("addpost");
         return modelAndView;
+    }
+
+
+//    @RequestMapping("/")
+//    public String UploadImage(Model model){
+//        return "addpost";
+//    }
+
+    @RequestMapping("/uploadd")
+    public String upload(Model model, @RequestParam("files") MultipartFile[] files) {
+        StringBuilder fileNames = new StringBuilder();
+        for (MultipartFile file : files) {
+            Path fileNameAndPath = Paths.get(uploadDirectory, file.getName());
+            fileNames.append(file.getName());
+            try {
+                Files.write(fileNameAndPath, file.getBytes());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        //model.addAttribute("msg", "Successfully uploaded files." + fileNames.toString());
+        return "post";
     }
 
     @DeleteMapping("/delete/{id}")
@@ -103,5 +135,31 @@ public class PostController {
         this.postService.dislikePost(username,id);
         return new ResponseEntity<>("Post is disliked.", HttpStatus.OK);
     }
+
+    @RequestMapping("/")
+    public String upl() {
+        return "addpostt";
+    }
+
+    @PostMapping("sav")
+    public String sav(@RequestParam("imageUrl1") MultipartFile imageUrl1, ModelMap model) {
+
+        Post post = new Post();
+        if (imageUrl1.isEmpty()){
+            return "addpostt";
+        }
+        Path path = Paths.get("uploads/");
+        try {
+            InputStream inputStream = imageUrl1.getInputStream();
+            Files.copy(inputStream, path.resolve(imageUrl1.getOriginalFilename()),
+                    StandardCopyOption.REPLACE_EXISTING);
+            post.setImageUrl1(imageUrl1.getOriginalFilename().toLowerCase());
+            model.addAttribute("POST", post);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "viewpost";
+    }
+
 }
 
