@@ -16,7 +16,7 @@ public interface PostService {
 
     Post create(Post post);
 
-    Post savePost(PostRequest postRequest);
+    Post savePost(Post post);
 
     Post findOne(Long id) throws Exception;
 

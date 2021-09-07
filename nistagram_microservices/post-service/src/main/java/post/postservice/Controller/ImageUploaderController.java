@@ -4,10 +4,7 @@ import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -21,7 +18,7 @@ public class ImageUploaderController {
     public ResponseEntity<ByteArrayResource> getImage(@PathVariable("imageUrl1") String imageUrl1){
         if(imageUrl1.equals("") || imageUrl1 != null) {
             try {
-                Path filename = Paths.get("static/images");
+                Path filename = Paths.get("C:\\Users\\User\\IdeaProjects\\xml_nistagram\\nistagram_microservices\\post-service\\uploads\\" , imageUrl1);
                 byte[] buffer = Files.readAllBytes(filename);
                 ByteArrayResource byteArrayResource = new ByteArrayResource(buffer);
                 return ResponseEntity.ok()

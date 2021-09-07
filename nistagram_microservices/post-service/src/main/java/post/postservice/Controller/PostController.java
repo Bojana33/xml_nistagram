@@ -17,7 +17,6 @@ import post.postservice.Model.Post;
 import post.postservice.Payload.PostRequest;
 import post.postservice.Service.PostService;
 import post.postservice.Service.impl.PostServiceImpl;
-import sun.text.normalizer.NormalizerBase;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -25,6 +24,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -53,7 +53,7 @@ public class PostController {
         Post postToSave = postService.create(post);
         model.addAttribute("postToSave", postToSave);
         postToSave.setUpdatedAt(new Date());
-        postToSave.setCreatedAt(new Date());
+        //postToSave.setCreatedAt(new Date());
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("addpost");
         return modelAndView;
@@ -66,7 +66,7 @@ public class PostController {
 //    }
 
     @RequestMapping("/uploadd")
-    public String upload(Model model, @RequestParam("files") MultipartFile[] files) {
+    public ModelAndView upload(Model model, @RequestParam("files") MultipartFile[] files) {
         StringBuilder fileNames = new StringBuilder();
         for (MultipartFile file : files) {
             Path fileNameAndPath = Paths.get(uploadDirectory, file.getName());
@@ -78,7 +78,7 @@ public class PostController {
             }
         }
         //model.addAttribute("msg", "Successfully uploaded files." + fileNames.toString());
-        return "post";
+        return new ModelAndView("post");
     }
 
     @DeleteMapping("/delete/{id}")
@@ -146,20 +146,21 @@ public class PostController {
     }
 
     @PostMapping("/sav")
-    public ModelAndView sav(@RequestParam("imageUrl1") MultipartFile imageUrl1, ModelMap model, @ModelAttribute Post post) {
-
-        Path path = Paths.get("static/images");
+    public ModelAndView sav(@RequestParam("imageUrl") MultipartFile imageUrl,@RequestParam("cpt") String cpt, ModelMap model, @ModelAttribute Post post) {
+        Path path = Paths.get("C:\\Users\\User\\IdeaProjects\\xml_nistagram\\nistagram_microservices\\post-service\\uploads");
         try {
-            InputStream inputStream = imageUrl1.getInputStream();
-            Files.copy(inputStream, path.resolve(imageUrl1.getOriginalFilename()),
+            InputStream inputStream = imageUrl.getInputStream();
+            Files.copy(inputStream, path.resolve(imageUrl.getOriginalFilename()),
                     StandardCopyOption.REPLACE_EXISTING);
-            post.setImageUrl1(imageUrl1.getOriginalFilename().toLowerCase());
+            post.setImageUrl1(imageUrl.getOriginalFilename().toLowerCase());
+            post.setCreatedAt(LocalDateTime.now());
+            post.setCaption(cpt);
             this.postService.savePost(post);
             model.addAttribute("post", post);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return "viewpost";
+        return new ModelAndView("viewpost");
     }
 
 }
