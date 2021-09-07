@@ -147,7 +147,7 @@ public class PostController {
 
     @PostMapping("/sav")
     public ModelAndView sav(@RequestParam("imageUrl") MultipartFile imageUrl,@RequestParam("cpt") String cpt, ModelMap model, @ModelAttribute Post post) {
-        Path path = Paths.get("C:\\Users\\User\\IdeaProjects\\xml_nistagram\\nistagram_microservices\\post-service\\uploads");
+        Path path = Paths.get("C:\\Users\\Dijana\\Desktop\\A\\xml_nistagram\\nistagram_microservices\\post-service\\uploads");
         try {
             InputStream inputStream = imageUrl.getInputStream();
             Files.copy(inputStream, path.resolve(imageUrl.getOriginalFilename()),
