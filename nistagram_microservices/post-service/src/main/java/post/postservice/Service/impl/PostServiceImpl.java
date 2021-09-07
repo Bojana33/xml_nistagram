@@ -27,7 +27,7 @@ public class PostServiceImpl implements PostService {
     public Post savePost(PostRequest postRequest)
     {
 
-        Post post = new Post(postRequest.getCaption(), postRequest.getUsername(), postRequest.getImageUrl1(), postRequest.getImageUrl2(), postRequest.getImageUrl3());
+        Post post = new Post(postRequest.getCaption(), postRequest.getImageUrl1());
 
         return this.postRepository.save(post);
     }

@@ -16,6 +16,8 @@ import post.postservice.Model.EmoticonType;
 import post.postservice.Model.Post;
 import post.postservice.Payload.PostRequest;
 import post.postservice.Service.PostService;
+import post.postservice.Service.impl.PostServiceImpl;
+import sun.text.normalizer.NormalizerBase;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -27,13 +29,13 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-@Controller
+@RestController
 public class PostController {
 
-    private PostService postService;
+    private PostServiceImpl postService;
 
     @Autowired
-    public PostController(PostService postService) {
+    public PostController(PostServiceImpl postService) {
         this.postService = postService;
     }
 
@@ -137,24 +139,23 @@ public class PostController {
     }
 
     @RequestMapping("/")
-    public String upl() {
-        return "addpostt";
+    public ModelAndView upl(Model model) {
+        Post post = new Post();
+        model.addAttribute("post",post);
+        return new ModelAndView("addpostt");
     }
 
-    @PostMapping("sav")
-    public String sav(@RequestParam("imageUrl1") MultipartFile imageUrl1, ModelMap model) {
+    @PostMapping("/sav")
+    public ModelAndView sav(@RequestParam("imageUrl1") MultipartFile imageUrl1, ModelMap model, @ModelAttribute Post post) {
 
-        Post post = new Post();
-        if (imageUrl1.isEmpty()){
-            return "addpostt";
-        }
-        Path path = Paths.get("uploads/");
+        Path path = Paths.get("static/images");
         try {
             InputStream inputStream = imageUrl1.getInputStream();
             Files.copy(inputStream, path.resolve(imageUrl1.getOriginalFilename()),
                     StandardCopyOption.REPLACE_EXISTING);
             post.setImageUrl1(imageUrl1.getOriginalFilename().toLowerCase());
-            model.addAttribute("POST", post);
+            this.postService.savePost(post);
+            model.addAttribute("post", post);
         } catch (Exception e) {
             e.printStackTrace();
         }
