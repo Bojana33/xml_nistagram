@@ -6,6 +6,7 @@ import post.postservice.DTO.User;
 import post.postservice.Model.Location;
 
 import java.util.Optional;
+import java.util.Set;
 
 @Repository
 public interface UserInfoRepository extends JpaRepository<User, Long> {
@@ -13,4 +14,6 @@ public interface UserInfoRepository extends JpaRepository<User, Long> {
     public User findByUsername(String username);
 
     Optional<User> findById(Long id);
+
+
 }

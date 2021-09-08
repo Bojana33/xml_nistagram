@@ -12,8 +12,7 @@ public class UserInfoServiceImpl implements UserInfoService {
     private UserInfoRepository userInfoRepository;
 
     @Autowired
-    public UserInfoServiceImpl(UserInfoRepository userInfoRepository)
-    {
+    public UserInfoServiceImpl(UserInfoRepository userInfoRepository) {
         this.userInfoRepository = userInfoRepository;
     }
 
@@ -25,4 +24,6 @@ public class UserInfoServiceImpl implements UserInfoService {
         User u = userInfoRepository.findById(id).orElseGet(null);
         return u;
     }
+
+
 }
