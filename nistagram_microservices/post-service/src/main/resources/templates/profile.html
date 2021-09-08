@@ -6,75 +6,73 @@
 </head>
 <body>
 
-<!--    <div id="profile">-->
-<!--        <div class="row" align="center">-->
-<!--            <br>-->
-<!--            <h2>My pictures</h2>-->
-<!--            <div class="container" style="margin-top: 10px;">-->
-<!--                <div class="row" style="border: 1px darkgrey solid; border-radius: 10px; width: 25%; margin: 0 auto; padding: 20px;">-->
-<!--                    <div class="col-sm-5">-->
-<!--                        <p align="center">-->
-<!--                            <img alt="" th:src="@{${'/images/image.jpg'}}" width="300" height="400">-->
-<!--                        </p>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </div>-->
-
-<!--            <div class="container" style="margin-top: 10px;">-->
-<!--                <div class="row" style="border: 1px darkgrey solid; border-radius: 10px; width: 25%; margin: 0 auto; padding: 20px;">-->
-<!--                    <div class="col-sm-5">-->
-<!--                        <p align="center">-->
-<!--                            <img alt="" th:src="@{${'/images/davetracklistt.jpg'}}" width="300" height="400">-->
-<!--                        </p>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </div>-->
-
-<!--            <div class="container" style="margin-top: 10px;">-->
-<!--                <div class="row" style="border: 1px darkgrey solid; border-radius: 10px; width: 25%; margin: 0 auto; padding: 20px;">-->
-<!--                    <div class="col-sm-5">-->
-<!--                        <p align="center">-->
-<!--                            <img alt="" th:src="@{${'/images/imagee.png'}}" width="300" height="400">-->
-<!--                        </p>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </div>-->
-
-
-<!--        </div>-->
-<!--    </div>-->
-
-
+    <div class="col-md-4>">
+        <img alt="" th:src="@{${'/images/th.png'}}" width="300" height="300">
+    </div>
 
     <form th:object="${user}" method="get">
-        <div class="profile-head" th:object="${user}">
-            <div id="profile">
-                <div class="col">
-                        <p align="center">
-                            <img alt="" th:src="@{${'/images/profilepic.jpg'}}" width="300" height="400">
-                        </p>
-                    <div class="row">
-                        <label>Name: </label>
-                        <p th:text="${user.getFirstname()}"></p>
-                    </div>
+            <table>
+            <tr>
+                <th>Name: </th>
+                <th th:text="${user.getFirstname()}"></th>
+            </tr>
+            </table>
 
-                    <div class="row">
-                        <label>Last name: </label>
-                        <p th:text="${user.getLastname()}"></p>
-                    </div>
+            <table>
+            <tr>
+                <th>Last name: </th>
+                <th th:text="${user.getLastname()}"></th>
+            </tr>
+            </table>
 
-                    <div class="row">
-                        <label>Phone: </label>
-                        <p th:text="${user.getPhone()}"></p>
-                    </div>
+            <table>
+            <tr>
+                <th>Phone: </th>
+                <th th:text="${user.getPhone()}"></th>
+            </tr>
+            </table>
 
-                    <div class="row">
-                        <label>Biography: </label>
-                        <p th:text="${user.getBiography()}"></p>
-                    </div>
-                </div>
-            </div>
-        </div>
+            <table>
+            <tr>
+                <th>Biography: </th>
+                <th th:text="${user.getBiography()}"></th>
+            </tr>
+            </table>
     </form>
+
+
+        <div class="row" align="center">
+            <br>
+            <h2>My pictures</h2>
+                        <div class="container" style="margin-top: 10px;">
+                            <div class="row" style="border: 1px darkgrey solid; border-radius: 10px; width: 25%; margin: 0 auto; padding: 20px;">
+                                <div class="col-sm-5">
+                                    <p align="center">
+                                        <img alt="" th:src="@{${'/images/image.jpg'}}" width="300" height="400">
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="container" style="margin-top: 10px;">
+                            <div class="row" style="border: 1px darkgrey solid; border-radius: 10px; width: 25%; margin: 0 auto; padding: 20px;">
+                                <div class="col-sm-5">
+                                    <p align="center">
+                                        <img alt="" th:src="@{${'/images/davetracklistt.jpg'}}" width="300" height="400">
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="container" style="margin-top: 10px;">
+                            <div class="row" style="border: 1px darkgrey solid; border-radius: 10px; width: 25%; margin: 0 auto; padding: 20px;">
+                                <div class="col-sm-5">
+                                    <p align="center">
+                                        <img alt="" th:src="@{${'/images/imagee.png'}}" width="300" height="400">
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 </body>
 </html>
