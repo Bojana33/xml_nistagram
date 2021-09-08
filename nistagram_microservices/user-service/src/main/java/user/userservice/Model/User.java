@@ -16,11 +16,11 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,property = "id")
+//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,property = "id")
 @Table(name = "users")
 public class User implements Serializable {
         @Id
-        @GeneratedValue(strategy = GenerationType.AUTO)
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
         private Long id;
 
         @Column
@@ -42,7 +42,7 @@ public class User implements Serializable {
         private Boolean active;
 
         @Column
-        private UserRole role;
+        private UserRole userRole;
 
         @Column
         private String phone;

@@ -1,9 +1,15 @@
 package user.userservice.Controller;
 
+import org.bouncycastle.math.raw.Mod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
+import user.userservice.DTO.UserDTO;
 import user.userservice.Model.Request;
 import user.userservice.Model.CategoryType;
 import user.userservice.Model.User;
@@ -27,11 +33,39 @@ public class UserController {
         this.verificationService = verificationService;
     }
 
+    @GetMapping("/index")
+    @PreAuthorize("hasAnyRole('ADMIN','USER','AGENT')")
+    public ModelAndView indexPage(Authentication auth, Model model) {
+        User u = this.userService.findByUsername(auth.getName());
+        model.addAttribute("user",u);
+        return new ModelAndView("indexPage");
+    }
+
+    @GetMapping("/home")
+    public ModelAndView home(){
+        return new ModelAndView("home");
+    }
+
+    @GetMapping("/login")
+    public ModelAndView loginForm(Model model) {
+        UserDTO user = new UserDTO();
+        model.addAttribute("user", user);
+        return new ModelAndView("login");
+    }
+
+    @GetMapping("/registration")
+    public ModelAndView registration(Model model){
+        User user = new User();
+        model.addAttribute("user", user);
+        return new ModelAndView("registration");
+    }
+
     @PostMapping(value = "/saveUser")
-    public ResponseEntity<String> createUser(@RequestBody User user) throws Exception {
+    public ResponseEntity<String> createUser(@ModelAttribute User user) throws Exception {
         if (userService.findByUsername(user.getUsername()) != null) {
             return new ResponseEntity<String>("Username already exist", HttpStatus.BAD_REQUEST);
         }
+        user.setUserRole(UserRole.USER);
         this.userService.create(user);
         return new ResponseEntity<String>("User is created", HttpStatus.OK);
     }
@@ -52,7 +86,7 @@ public class UserController {
         if (user == null) {
             throw new Exception("User does not exist");
         }
-        if (user.getRole()!= UserRole.ADMIN) {
+        if (user.getUserRole()!= UserRole.ADMIN) {
             throw new Exception("Access denied");
         }
         return new ResponseEntity<>(this.verificationService.findAll(), HttpStatus.OK);

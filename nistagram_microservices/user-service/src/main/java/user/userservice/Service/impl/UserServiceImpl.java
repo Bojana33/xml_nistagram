@@ -43,7 +43,7 @@ public class UserServiceImpl implements UserService {
         userToUpdate.setPassword(user.getPassword());
         userToUpdate.setPhone(user.getPhone());
         userToUpdate.setUsername(user.getUsername());
-        userToUpdate.setRole(user.getRole());
+        userToUpdate.setUserRole(user.getUserRole());
         userToUpdate.setName(user.getName());
         userToUpdate.setLastname(user.getLastname());
         userToUpdate.setWebsite(user.getWebsite());
@@ -149,6 +149,11 @@ public class UserServiceImpl implements UserService {
         User userUnfollows = this.userRepository.findByUsername(username);
         userUnfollows.getFollowers().remove(usernameToUnfollow);
         this.userRepository.save(userUnfollows);
+    }
+
+    @Override
+    public User findByUsernameAndPassword(String username, String password) {
+        return userRepository.findByUsernameAndPassword(username,password);
     }
 
     @Override
