@@ -87,12 +87,6 @@ public class PostController {
         postService.delete(id);
     }
 
-    @GetMapping("/posts/{username}")
-    public ResponseEntity<?> findUserPosts(@PathVariable("username") String username) {
-        List<Post> posts = postService.postsByUsername(username);
-        return new ResponseEntity(posts, HttpStatus.OK);
-    }
-
     /*@PostMapping()
     public ResponseEntity<?> createPost(@RequestBody , @RequestHeader(value= "username") String username) throws Exception {
         Post newPost = postService.create();
@@ -146,7 +140,8 @@ public class PostController {
     }
 
     @PostMapping("/sav")
-    public ModelAndView sav(@RequestParam("imageUrl") MultipartFile imageUrl, @RequestParam("cpt") String cpt, ModelMap model, @ModelAttribute Post post) {
+    public ModelAndView sav(@RequestParam("imageUrl") MultipartFile imageUrl, @RequestParam("cpt") String cpt,
+                            @RequestParam("tag") String tag, @RequestParam("loc") String loc, ModelMap model, @ModelAttribute Post post) {
         Path path = Paths.get("C:\\Users\\Dijana\\Desktop\\A\\xml_nistagram\\nistagram_microservices\\post-service\\uploads");
         try {
             InputStream inputStream = imageUrl.getInputStream();
@@ -154,6 +149,8 @@ public class PostController {
                     StandardCopyOption.REPLACE_EXISTING);
             post.setImageUrl1(imageUrl.getOriginalFilename().toLowerCase());
             post.setCreatedAt(LocalDateTime.now());
+            post.setTag(tag);
+            post.setLocation(loc);
             post.setCaption(cpt);
             this.postService.savePost(post);
             model.addAttribute("post", post);
@@ -163,5 +160,10 @@ public class PostController {
         return new ModelAndView("viewpost");
     }
 
+    @GetMapping("/posts/{username}")
+    public ResponseEntity<?> findUserPosts(@PathVariable("username") String username) {
+        List<Post> posts = postService.postsByUsername(username);
+        return new ResponseEntity(posts, HttpStatus.OK);
+    }
 }
 

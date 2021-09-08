@@ -38,6 +38,12 @@ public class Post implements Serializable {
     private String caption;
 
     @Column
+    private String tag;
+
+    @Column
+    private String location;
+
+    @Column
     private String username;
 
     @Column

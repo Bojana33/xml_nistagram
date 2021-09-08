@@ -57,6 +57,6 @@ public class User implements Serializable {
 //    @Column
 //    private Boolean deactivated =Boolean.FALSE;
 //
-//    @ElementCollection
-//    private Set<String> followers;
+    @ElementCollection
+    private Set<String> followers;
 }
