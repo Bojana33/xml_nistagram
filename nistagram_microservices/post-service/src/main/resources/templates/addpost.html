@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Add a post</title>
@@ -9,30 +9,38 @@
 <!-- Default form subscription -->
 <div class="card">
     <div class="card-header">
-        <p>Add a Post</p>
+        <h1>Add a Post</h1>
     </div>
     <div>
-        <form th:object="${post}" th:action="@{/upload}" method="post">
-
+<!--        <form th:object="${post}" th:action="@{/upload}" method="post" enctype="multipart/form-data">-->
+        <form action="/sav" method="post" enctype="multipart/form-data">
             <!-- Name -->
+            <div>
             <input type="text" name="pname" id="name"
                    placeholder="Product Name">
-
+            </div>
+            <br>
+            <div>
             <!-- Caption -->
             <textarea id="cpt" name="cpt"
                       placeholder="Caption">Caption
                                  </textarea>
-
-            <div>
-                <input type="file" name="file"
-                       id="customFile"> <label
-                    for="customFile">Image</label>
             </div>
+            <br>
+            <div>
+                <input type="file" name="file" multiple
+                       id="customFile">
+                <label for="customFile">Image</label>
+            </div>
+            <br>
             <!-- Sign in button -->
-            <button type="submit">add</button>
+            <button type="submit">Add</button>
+<!--        </form>-->
         </form>
     </div>
 </div>
-</form>
+
+
+
 </body>
 </html>

@@ -2,19 +2,14 @@ package post.postservice.Service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
-import org.springframework.web.multipart.MultipartFile;
-import post.postservice.DTO.Image;
 import post.postservice.Model.EmoticonType;
 import post.postservice.Model.Post;
+import post.postservice.Payload.PostRequest;
 import post.postservice.Repository.PostRepository;
 import post.postservice.Service.PostService;
 
-import java.io.IOException;
-import java.util.Base64;
-import java.util.Date;
+
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class PostServiceImpl implements PostService {
@@ -29,25 +24,12 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public Post savePost(Post post, MultipartFile file, String caption, String username, Image image)
+    public Post savePost(Post post)
     {
 
-        String filename = StringUtils.cleanPath(file.getOriginalFilename());
-        if (filename.contains(".."))
-        {
-            System.out.println("Not a valid file");
-        }
-        try {
-            image.setUri(Base64.getEncoder().encodeToString(file.getBytes()));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        post.setCaption(caption);
-        post.setUsername(username);
-        post.setCreatedAt(new Date());
-        post.setUpdatedAt(new Date());
+        Post postToSave = new Post(post.getCaption(), post.getImageUrl1(), post.getCreatedAt());
 
-        return this.postRepository.save(post);
+        return this.postRepository.save(postToSave);
     }
 
     @Override
@@ -74,7 +56,7 @@ public class PostServiceImpl implements PostService {
         return postToUpdate;
     }
 
-    public void delete(Long id) throws Exception {
+    public void delete(Long id){
         Post post = this.postRepository.getById(id);
         this.postRepository.delete(post);
     }
@@ -86,8 +68,7 @@ public class PostServiceImpl implements PostService {
     @Override
     public Post findOne(Long id)
     {
-        Post post = this.postRepository.getById(id);
-        return post;
+        return this.postRepository.getById(id);
     }
 
     @Override
