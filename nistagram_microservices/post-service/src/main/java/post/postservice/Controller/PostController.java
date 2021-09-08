@@ -12,11 +12,13 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import post.postservice.DTO.Image;
+import post.postservice.DTO.User;
 import post.postservice.Model.EmoticonType;
 import post.postservice.Model.Post;
 import post.postservice.Payload.PostRequest;
 import post.postservice.Service.PostService;
 import post.postservice.Service.impl.PostServiceImpl;
+import post.postservice.Service.impl.UserInfoServiceImpl;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -34,9 +36,12 @@ public class PostController {
 
     private PostServiceImpl postService;
 
+    private UserInfoServiceImpl userInfoService;
+
     @Autowired
-    public PostController(PostServiceImpl postService) {
+    public PostController(PostServiceImpl postService, UserInfoServiceImpl userInfoService) {
         this.postService = postService;
+        this.userInfoService = userInfoService;
     }
 
     public static String uploadDirectory = System.getProperty("images","/uploads");
@@ -132,16 +137,23 @@ public class PostController {
         return new ResponseEntity<>("Post is disliked.", HttpStatus.OK);
     }
 
-    @RequestMapping("/")
-    public ModelAndView upl(Model model) {
+    @RequestMapping("/{id}")
+    public ModelAndView upl(Model model, @PathVariable Long id) throws Exception{
         Post post = new Post();
+        User user = this.userInfoService.findById(id);
+        if (user == null) { throw new Exception("User does not exist."); }
+        model.addAttribute("user", user);
         model.addAttribute("post",post);
         return new ModelAndView("addpostt");
     }
 
-    @PostMapping("/sav")
+    @PostMapping("/sav/{id}")
     public ModelAndView sav(@RequestParam("imageUrl") MultipartFile imageUrl, @RequestParam("cpt") String cpt,
-                            @RequestParam("tag") String tag, @RequestParam("loc") String loc, ModelMap model, @ModelAttribute Post post) {
+                            @RequestParam("tag") String tag, @RequestParam("loc") String loc, ModelMap model,
+                            @ModelAttribute Post post, @PathVariable Long id, Model modell) throws Exception{
+        User user = this.userInfoService.findById(id);
+        if (user == null) { throw new Exception("User does not exist."); }
+        modell.addAttribute("user", user);
         Path path = Paths.get("C:\\Users\\Dijana\\Desktop\\A\\xml_nistagram\\nistagram_microservices\\post-service\\uploads");
         try {
             InputStream inputStream = imageUrl.getInputStream();

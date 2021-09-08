@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
+import post.postservice.Model.Post;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -59,4 +60,6 @@ public class User implements Serializable {
 //
     @ElementCollection
     private Set<String> followers;
+
+    private Post post;
 }
