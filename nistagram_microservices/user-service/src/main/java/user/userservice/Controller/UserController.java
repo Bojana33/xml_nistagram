@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import user.userservice.Feign.IFeignClient;
 import user.userservice.Model.Request;
 import user.userservice.Model.User;
 import user.userservice.Service.UserService;
@@ -15,10 +16,17 @@ import java.util.Set;
 public class UserController {
 
     private UserService userService;
+    private IFeignClient feignClient;
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService, IFeignClient feignClient) {
         this.userService = userService;
+        this.feignClient = feignClient;
+    }
+
+    @GetMapping(path = "/feign")
+    public ResponseEntity<String> test() {
+        return feignClient.testMessage();
     }
 
     @PostMapping(value = "/saveUser")

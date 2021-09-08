@@ -3,19 +3,14 @@ package post.postservice.Controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import post.postservice.DTO.Image;
 import post.postservice.Model.EmoticonType;
 import post.postservice.Model.Post;
-import post.postservice.Payload.PostRequest;
-import post.postservice.Service.PostService;
 import post.postservice.Service.impl.PostServiceImpl;
 
 import java.io.IOException;
@@ -27,7 +22,6 @@ import java.nio.file.StandardCopyOption;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 @RestController
 public class PostController {
@@ -147,7 +141,7 @@ public class PostController {
 
     @PostMapping("/sav")
     public ModelAndView sav(@RequestParam("imageUrl") MultipartFile imageUrl,@RequestParam("cpt") String cpt, ModelMap model, @ModelAttribute Post post) {
-        Path path = Paths.get("C:\\Users\\Dijana\\Desktop\\A\\xml_nistagram\\nistagram_microservices\\post-service\\uploads");
+        Path path = Paths.get("/media/boris/Faks/FTN8/XWS/xml_nistagram/nistagram_microservices/post-service/uploads/");
         try {
             InputStream inputStream = imageUrl.getInputStream();
             Files.copy(inputStream, path.resolve(imageUrl.getOriginalFilename()),

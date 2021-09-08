@@ -18,7 +18,7 @@ public class ImageUploaderController {
     public ResponseEntity<ByteArrayResource> getImage(@PathVariable("imageUrl1") String imageUrl1){
         if(imageUrl1.equals("") || imageUrl1 != null) {
             try {
-                Path filename = Paths.get("C:\\Users\\Dijana\\Desktop\\A\\xml_nistagram\\nistagram_microservices\\post-service\\uploads\\" , imageUrl1);
+                Path filename = Paths.get("/media/boris/Faks/FTN8/XWS/xml_nistagram/nistagram_microservices/post-service/uploads/" , imageUrl1);
                 byte[] buffer = Files.readAllBytes(filename);
                 ByteArrayResource byteArrayResource = new ByteArrayResource(buffer);
                 return ResponseEntity.ok()
