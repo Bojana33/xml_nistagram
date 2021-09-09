@@ -1,10 +1,16 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html>jjjj
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Feed</title>
 </head>
 <body>
+
+<div class="content">
+    <p th:each="post:${posts}">
+        <img alt="" th:src="@{'getimage/'+${post.imageUrl1} + '/' + ${user.username}}" width="500" height="400">
+    </p>
+</div>
 
 </body>
 </html>

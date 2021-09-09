@@ -21,6 +21,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -175,6 +176,36 @@ public class PostController {
     public ResponseEntity<?> findUserPosts(@PathVariable("username") String username) {
         List<Post> posts = postService.postsByUsername(username);
         return new ResponseEntity(posts, HttpStatus.OK);
+    }
+
+    @GetMapping("/profile/{username}")
+    public ModelAndView showProfile(@PathVariable String username, Model model) throws Exception {
+        List<Post> posts = this.postService.postsByUsername(username);
+        User user = new User();
+        user.setUsername(this.userClient.getUsername(username)) ;
+        user.setFirstname(this.userClient.getName(name)) ;
+        user.setLastname(this.userClient.getLastName(lastname)) ;
+        user.setPhone(this.userClient.getPhone(phone));
+        user.setBiography(this.userClient.getBiography(biography));
+        model.addAttribute("posts", posts);
+        model.addAttribute("user",user);
+        //if (user == null) { throw new Exception("User does not exist."); }
+        //model.addAttribute("user", user);
+        return new ModelAndView("profile");
+    }
+
+    @GetMapping("/feed/{username}")
+    public ModelAndView showFeed(@PathVariable String username, Model model)  {
+        User user = new User();
+        user.setUsername(this.userClient.getUsername(username));
+        List<Post> posts = new ArrayList<>();
+        for (String uname :
+                user.getFollowers()) {
+            posts.addAll(postService.postsByUsername(uname));
+        }
+
+        model.addAttribute("posts", posts);
+        return new ModelAndView("feed");
     }
 }
 
