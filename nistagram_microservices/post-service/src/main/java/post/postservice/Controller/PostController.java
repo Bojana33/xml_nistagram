@@ -9,18 +9,12 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import post.postservice.DTO.Image;
 import post.postservice.DTO.User;
-import post.postservice.Model.EmoticonType;
-import post.postservice.Model.Post;
-import post.postservice.Payload.PostRequest;
-import post.postservice.Service.PostService;
-import post.postservice.Service.impl.PostServiceImpl;
-import post.postservice.Service.impl.UserInfoServiceImpl;
-
 import post.postservice.Feign.IPhotoClient;
 import post.postservice.Feign.IUserClient;
+import post.postservice.Model.EmoticonType;
+import post.postservice.Model.Post;
+import post.postservice.Service.impl.PostServiceImpl;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -31,7 +25,8 @@ import java.nio.file.StandardCopyOption;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
+
+//import post.postservice.Service.impl.UserInfoServiceImpl;
 
 @RestController
 public class PostController {
@@ -41,9 +36,9 @@ public class PostController {
     private IUserClient userClient;
 
     @Autowired
-    public PostController(PostServiceImpl postService, UserInfoServiceImpl userInfoService, IPhotoClient photoClient, IUserClient userClient) {
+    public PostController(PostServiceImpl postService, IPhotoClient photoClient, IUserClient userClient) {
         this.postService = postService;
-        this.userInfoService = userInfoService;
+        //this.userInfoService = userInfoService;
         this.photoClient = photoClient;
         this.userClient = userClient;
     }
@@ -154,7 +149,7 @@ public class PostController {
         return new ModelAndView("addpostt");
     }
 
-    @RequestMapping("/{id}")
+    /*@RequestMapping("/{id}")
     public ModelAndView upl(Model model, @PathVariable Long id) throws Exception{
         Post post = new Post();
         User user = this.userInfoService.findById(id);
@@ -162,7 +157,7 @@ public class PostController {
         model.addAttribute("user", user);
         model.addAttribute("post",post);
         return new ModelAndView("addpostt");
-    }
+    }*/
 
     @RequestMapping("/{username}/addPost")
     public ModelAndView upl(Model model, @PathVariable String username) throws Exception{
@@ -172,13 +167,13 @@ public class PostController {
         return new ModelAndView("addpostt");
     }
 
-    @PostMapping("/sav/{id}")
+    /*@PostMapping("/sav/{id}")
     public ModelAndView sav(@RequestParam("imageUrl") MultipartFile imageUrl, @RequestParam("cpt") String cpt,
                             @RequestParam("tag") String tag, @RequestParam("loc") String loc, ModelMap model,
                             @ModelAttribute Post post, @PathVariable Long id, Model modell) throws Exception{
-        User user = this.userInfoService.findById(id);
+        *//*User user = this.userInfoService.findById(id);
         if (user == null) { throw new Exception("User does not exist."); }
-        modell.addAttribute("user", user);
+        modell.addAttribute("user", user);*//*
         Path path = Paths.get("C:\\Users\\Dijana\\Desktop\\A\\xml_nistagram\\nistagram_microservices\\post-service\\uploads");
         try {
             InputStream inputStream = imageUrl.getInputStream();
@@ -195,16 +190,16 @@ public class PostController {
             e.printStackTrace();
         }
         return new ModelAndView("viewpost");
-    }
+    }*/
 
     @PostMapping("/sav")
-    public ModelAndView sav(@RequestParam("imageUrl") MultipartFile imageUrl,@RequestParam("cpt") String cpt, ModelMap model, @ModelAttribute Post post) {
+    public ModelAndView sav(@RequestParam("imageUrl1") MultipartFile imageUrl1,@RequestParam("cpt") String cpt, ModelMap model, @ModelAttribute Post post) {
         Path path = Paths.get("/media/boris/Faks/FTN8/XWS/xml_nistagram/nistagram_microservices/post-service/uploads/");
         try {
-            InputStream inputStream = imageUrl.getInputStream();
-            Files.copy(inputStream, path.resolve(imageUrl.getOriginalFilename()),
+            InputStream inputStream = imageUrl1.getInputStream();
+            Files.copy(inputStream, path.resolve(imageUrl1.getOriginalFilename()),
                     StandardCopyOption.REPLACE_EXISTING);
-            post.setImageUrl1(imageUrl.getOriginalFilename().toLowerCase());
+            post.setImageUrl1(imageUrl1.getOriginalFilename().toLowerCase());
             post.setCreatedAt(LocalDateTime.now());
             post.setCaption(cpt);
             this.postService.savePost(post);
@@ -216,13 +211,13 @@ public class PostController {
     }
 
     @PostMapping("/sav/{username}")
-    public ModelAndView sav(@RequestParam("imageUrl") MultipartFile imageUrl, @RequestParam("cpt") String cpt,
+    public ModelAndView savee(@RequestParam("imageUrl") MultipartFile imageUrl, @RequestParam("cpt") String cpt,
                             @RequestParam("tag") String tag, @RequestParam("loc") String loc, ModelMap model,
                             @ModelAttribute Post post, @PathVariable String username, Model modell) throws Exception{
         //User user = this.userInfoService.findById(id);
         //if (user == null) { throw new Exception("User does not exist."); }
         //modell.addAttribute("user", user);
-        Path path = Paths.get("C:\\Users\\User\\IdeaProjects\\xml_nistagram\\nistagram_microservices\\post-service\\uploads");
+        Path path = Paths.get("/media/boris/Faks/FTN8/XWS/xml_nistagram/nistagram_microservices/post-service/uploads");
         try {
             InputStream inputStream = imageUrl.getInputStream();
             Files.copy(inputStream, path.resolve(imageUrl.getOriginalFilename()),
@@ -234,14 +229,15 @@ public class PostController {
             post.setCaption(cpt);
             post.setUsername(username);
             User user = new User();
-            user.setUsername(this.userClient.getUsername(username)) ;
-            user.setFirstname(this.userClient.getName(name)) ;
-            user.setLastname(this.userClient.getLastName(lastname)) ;
-            user.setPhone(this.userClient.getPhone(phone));
-            user.setBiography(this.userClient.getBiography(biography));
+            user.setUsername(username);
+            user.setFirstname(this.userClient.getName(username));
+            user.setLastname(this.userClient.getLastName(username));
+            user.setPhone(this.userClient.getPhone(username));
+            user.setBiography(this.userClient.getBiography(username));
             this.postService.savePost(post);
             model.addAttribute("post", post);
             model.addAttribute("user", user);
+            model.addAttribute("imageUrl1",post.getImageUrl1());
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import post.postservice.Feign.IUserClient;
 import post.postservice.Model2.User;
-import post.postservice.Service.UserInfoService;
+//import post.postservice.Service.UserInfoService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,8 +15,8 @@ import java.util.List;
 @RestController
 public class UserInfoController {
 
-    @Autowired
-    public UserInfoService userInfoService;
+    /*@Autowired
+    public UserInfoService userInfoService;*/
     @Autowired
     public IUserClient userClient;
 
@@ -35,5 +35,10 @@ public class UserInfoController {
         }
 
         return followers;
+    }
+
+    @GetMapping("/current")
+    private String getCurrent() {
+        return this.userClient.getCurrent();
     }
 }

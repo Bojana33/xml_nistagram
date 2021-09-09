@@ -1,6 +1,5 @@
 package user.userservice.Controller;
 
-import org.bouncycastle.math.raw.Mod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -9,17 +8,14 @@ import org.springframework.security.core.Authentication;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import user.userservice.AuthenticationFacade.IAuthenticationFacade;
 import user.userservice.DTO.UserDTO;
-import user.userservice.Model.Request;
-import user.userservice.Model.CategoryType;
-import user.userservice.Model.User;
-import user.userservice.Model.UserRole;
-import user.userservice.Model.VerificationRequest;
+import user.userservice.Feign.IFeignClient;
+import user.userservice.Model.*;
 import user.userservice.Service.UserService;
 import user.userservice.Service.VerificationRequestService;
-import user.userservice.Feign.IFeignClient;
-import java.util.ArrayList;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -29,12 +25,14 @@ public class UserController {
     private UserService userService;
     private VerificationRequestService verificationService;
     private IFeignClient feignClient;
+    private IAuthenticationFacade authenticationFacade;
 
     @Autowired
-    public UserController(UserService userService, VerificationRequestService verificationService, IFeignClient feignClient) {
+    public UserController(UserService userService, VerificationRequestService verificationService, IFeignClient feignClient, IAuthenticationFacade authenticationFacade) {
         this.userService = userService;
         this.verificationService = verificationService;
         this.feignClient = feignClient;
+        this.authenticationFacade = authenticationFacade;
     }
 
     @GetMapping(path = "/feign")
@@ -233,7 +231,7 @@ public class UserController {
     }
 
     @PostMapping(value = "{receiver}/profile/{sender}/handleRequests/{reqId}/{status}")
-    public ResponseEntity<String> handleRequests(@PathVariable String receiver, @PathVariable String sender,@PathVariable Long reqId,@PathVariable Boolean status) {
+    public ResponseEntity<String> handleRequests(@PathVariable String receiver, @PathVariable String sender,@PathVariable Long reqId,@PathVariable Boolean status) throws Exception {
         this.userService.handleRequests(receiver, sender, reqId, status);
         return new ResponseEntity<>("Request successfully resolved.", HttpStatus.OK);
     }
@@ -249,5 +247,32 @@ public class UserController {
         this.userService.unblockUser(usernameUnblocking,usernameToUnblock);
         return new ResponseEntity<>("User is unblocked", HttpStatus.OK);
     }
+
+    @GetMapping("/currentUser")
+    public String getCurrent() {
+        String username = this.authenticationFacade.getAuthentication().getName();
+        return username;
+    }
+
+    @GetMapping("/{username}/getName")
+    String getName(@PathVariable("username") String username) {
+        return this.userService.findByUsername(username).getName();
+    }
+
+    @GetMapping("/{username}/getLastName")
+    String getLastName(@PathVariable("username") String username) {
+        return this.userService.findByUsername(username).getLastname();
+    }
+
+    @GetMapping("/{username}/getPhone")
+    String getPhone (@PathVariable("username") String username) {
+        return this.userService.findByUsername(username).getPhone();
+    }
+
+    @GetMapping("/{username}/getBio")
+    String getBiography(@PathVariable("username") String username) {
+        return this.userService.findByUsername(username).getBiography();
+    }
+
 }
 

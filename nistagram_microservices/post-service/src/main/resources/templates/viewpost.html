@@ -20,28 +20,28 @@
     <table>
         <tr>
             <th>Name: </th>
-            <th th:field="*{firstname}"></th>
+            <th th:text="${user.firstname}"></th>
         </tr>
     </table>
 
     <table>
         <tr>
             <th>Last name: </th>
-            <th th:field="*{lastname}"></th>
+            <th th:text="${user.lastname}"></th>
         </tr>
     </table>
 
     <table>
         <tr>
             <th>Phone: </th>
-            <th th:field="*{phone}"></th>
+            <th th:text="${user.phone}"></th>
         </tr>
     </table>
 
     <table>
         <tr>
             <th>Biography: </th>
-            <th th:field="*{biography}"></th>
+            <th th:text="${user.biography}"></th>
         </tr>
     </table>
 </form>
@@ -50,7 +50,7 @@
     <div class="row" style="border: 1px darkgrey solid; border-radius: 10px; width: 50%; margin: 0 auto; padding: 20px;">
         <div class="col-sm-12">
             <p align="center">
-                <img alt="" th:src="@{'getimage/'+${post.imageUrl1}+${user.username}}" width="500" height="400">
+                <img alt="" th:src="@{'getimage/'+${imageUrl1}}" width="500" height="400">
             </p>
         </div>
     </div>

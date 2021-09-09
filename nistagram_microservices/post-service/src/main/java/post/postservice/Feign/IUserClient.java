@@ -16,4 +16,20 @@ public interface IUserClient {
 
     @GetMapping("/{username}/numOfFollowers")
     Integer getFollowersNum(@PathVariable("username") String username);
+
+    @GetMapping("/currentUser")
+    String getCurrent();
+
+    @GetMapping("/{username}/getName")
+    String getName(@PathVariable("username") String username);
+
+    @GetMapping("/{username}/getLastName")
+    String getLastName(@PathVariable("username") String username);
+
+    @GetMapping("/{username}/getPhone")
+    String getPhone (@PathVariable("username") String username);
+
+    @GetMapping("/{username}/getBio")
+    String getBiography(@PathVariable("username") String username);
+
 }
