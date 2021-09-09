@@ -102,23 +102,23 @@ services:
       ports:
         - 8087:8087
 
-    zuul-api-gateway:
-      build: ./zuul-api-gateway
-      image: zuul_api_gateway_image
-      container_name: zuulContainer
-      hostname: zuul-gateway
-      networks:
-        service-discovery-network:
-          aliases:
-            - zuul-gateway
-      environment:
-        USER_ALIAS: user-service
-        POST_ALIAS: post-service
-        PHOTO_ALIAS: photo-service
-      ports:
-        - 8079:8079
-      volumes:
-          - $HOME/.m2:/root/.m2
+#    zuul-api-gateway:
+#      build: ./zuul-api-gateway
+#      image: zuul_api_gateway_image
+#      container_name: zuulContainer
+#      hostname: zuul-gateway
+#      networks:
+#        service-discovery-network:
+#          aliases:
+#            - zuul-gateway
+#      environment:
+#        USER_ALIAS: user-service
+#        POST_ALIAS: post-service
+#        PHOTO_ALIAS: photo-service
+#      ports:
+#        - 8079:8079
+#      volumes:
+#          - $HOME/.m2:/root/.m2
 
 volumes:
   database-data:

@@ -202,7 +202,7 @@ public class UserController {
         return new ResponseEntity<>(this.userService.findByUsername(sender).getReceivedRequests(), HttpStatus.OK);
     }
 
-    @PostMapping(value = "{sender}/profile/{receiver}/follow")
+    @GetMapping(value = "{sender}/profile/{receiver}/follow")
     public ResponseEntity<String> followUser(@PathVariable String sender, @PathVariable String receiver){
         this.userService.followUser(sender, receiver);
         return new ResponseEntity<>("Request is sent", HttpStatus.OK);
