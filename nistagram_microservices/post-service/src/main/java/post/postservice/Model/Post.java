@@ -1,14 +1,10 @@
 package post.postservice.Model;
 
 import lombok.*;
-import post.postservice.DTO.Album;
 
 import javax.persistence.*;
-import java.io.File;
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -53,6 +49,9 @@ public class Post implements Serializable {
     private String imageUrl2;
     @Column
     private String imageUrl3;
+
+    @Column
+    private Long imageId;
 
     public Post( String caption, String username, String imageUrl1, String imageUrl2, String imageUrl3) {
         this.updatedAt = new Date();

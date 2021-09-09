@@ -1,46 +1,39 @@
 package post.postservice.Controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ByteArrayResource;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
-import post.postservice.DTO.User;
-import post.postservice.Service.impl.UserInfoServiceImpl;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
+import post.postservice.Feign.IUserClient;
+import post.postservice.Model2.User;
+import post.postservice.Service.UserInfoService;
 
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
-@RequestMapping(value = "/user")
 public class UserInfoController {
 
-    public UserInfoServiceImpl userInfoService;
-
     @Autowired
-    private UserInfoController (UserInfoServiceImpl userInfoService) {
-        this.userInfoService = userInfoService;
+    public UserInfoService userInfoService;
+    @Autowired
+    public IUserClient userClient;
+
+
+    @GetMapping(value = "/tst/{username}")
+    public ResponseEntity<User> getUser(@PathVariable String username) {
+        return userClient.getUser(username);
     }
 
-//    @RequestMapping(value = "/profile")
-//    public ModelAndView profile(Model model, User user) {
-//        String username = user.getFirstname();
-//        model.addAttribute("user", userInfoService.findByUsername(username));
-//        return new ModelAndView("profile");
-//    }
+    @GetMapping("/{username}/followers")
+    private List<String> getFollowers(@PathVariable("username") String username) {
+        List<String> followers = new ArrayList<>();
 
-    @GetMapping("/profile/{id}")
-    public ModelAndView showProfile(@PathVariable Long id, Model model) throws Exception {
-        User user = this.userInfoService.findById(id);
-        if (user == null) { throw new Exception("User does not exist."); }
-        model.addAttribute("user", user);
-        return new ModelAndView("profile");
+        for (int i = 0; i < userClient.getFollowersNum(username); i++) {
+            followers.add(userClient.getFollower(username, i));
+        }
+
+        return followers;
     }
-
-
-
-
 }

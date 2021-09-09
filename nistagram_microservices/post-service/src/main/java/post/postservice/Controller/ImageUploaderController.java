@@ -28,7 +28,7 @@ public class ImageUploaderController {
 //        User user = this.userInfoService.findById(id);
 //        if (user == null) { throw new Exception("User does not exist."); }
 //        modell.addAttribute("user", user);
-        if(imageUrl1.equals("") || imageUrl1 != null) {
+        if(!imageUrl1.equals("") || imageUrl1 != null) {
             try {
                 Path filename = Paths.get("/media/boris/Faks/FTN8/XWS/xml_nistagram/nistagram_microservices/post-service/uploads/" , imageUrl1);
                 byte[] buffer = Files.readAllBytes(filename);

@@ -1,11 +1,10 @@
-package photo.photoservice.Model;
+package post.postservice.Model2;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.*;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
@@ -15,21 +14,13 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 
-@Entity
 public class Tag implements Serializable {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+
     private Long id;
 
-    @Column
-    private String name;
-
-    @Column
     private String username;
 
-    @Column
     private String uri;
 
-    @ManyToMany(mappedBy= "tags")
     private Set<Image> tagged = new HashSet<>();
 }

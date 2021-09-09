@@ -3,22 +3,17 @@ package post.postservice.Controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import post.postservice.DTO.Image;
-import post.postservice.DTO.User;
+import post.postservice.Feign.IPhotoClient;
+import post.postservice.Feign.IUserClient;
 import post.postservice.Model.EmoticonType;
 import post.postservice.Model.Post;
-import post.postservice.Payload.PostRequest;
-import post.postservice.Service.PostService;
 import post.postservice.Service.impl.PostServiceImpl;
-import post.postservice.Service.impl.UserInfoServiceImpl;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -29,19 +24,19 @@ import java.nio.file.StandardCopyOption;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 @RestController
 public class PostController {
 
     private PostServiceImpl postService;
-
-    private UserInfoServiceImpl userInfoService;
+    private IPhotoClient photoClient;
+    private IUserClient userClient;
 
     @Autowired
-    public PostController(PostServiceImpl postService, UserInfoServiceImpl userInfoService) {
+    public PostController(PostServiceImpl postService, IPhotoClient photoClient, IUserClient userClient) {
         this.postService = postService;
-        this.userInfoService = userInfoService;
+        this.photoClient = photoClient;
+        this.userClient = userClient;
     }
 
     public static String uploadDirectory = System.getProperty("images","/uploads");
@@ -150,16 +145,6 @@ public class PostController {
         return new ModelAndView("addpostt");
     }
 
-    @RequestMapping("/{id}")
-    public ModelAndView upl(Model model, @PathVariable Long id) throws Exception{
-        Post post = new Post();
-        User user = this.userInfoService.findById(id);
-        if (user == null) { throw new Exception("User does not exist."); }
-        model.addAttribute("user", user);
-        model.addAttribute("post",post);
-        return new ModelAndView("addpostt");
-    }
-
     @PostMapping("/sav")
     public ModelAndView sav(@RequestParam("imageUrl") MultipartFile imageUrl,@RequestParam("cpt") String cpt, ModelMap model, @ModelAttribute Post post) {
         Path path = Paths.get("/media/boris/Faks/FTN8/XWS/xml_nistagram/nistagram_microservices/post-service/uploads/");
@@ -178,35 +163,5 @@ public class PostController {
         return new ModelAndView("viewpost");
     }
 
-    @PostMapping("/sav/{id}")
-    public ModelAndView sav(@RequestParam("imageUrl") MultipartFile imageUrl, @RequestParam("cpt") String cpt,
-                            @RequestParam("tag") String tag, @RequestParam("loc") String loc, ModelMap model,
-                            @ModelAttribute Post post, @PathVariable Long id, Model modell) throws Exception{
-        User user = this.userInfoService.findById(id);
-        if (user == null) { throw new Exception("User does not exist."); }
-        modell.addAttribute("user", user);
-        Path path = Paths.get("C:\\Users\\Dijana\\Desktop\\A\\xml_nistagram\\nistagram_microservices\\post-service\\uploads");
-        try {
-            InputStream inputStream = imageUrl.getInputStream();
-            Files.copy(inputStream, path.resolve(imageUrl.getOriginalFilename()),
-                    StandardCopyOption.REPLACE_EXISTING);
-            post.setImageUrl1(imageUrl.getOriginalFilename().toLowerCase());
-            post.setCreatedAt(LocalDateTime.now());
-            post.setTag(tag);
-            post.setLocation(loc);
-            post.setCaption(cpt);
-            this.postService.savePost(post);
-            model.addAttribute("post", post);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return new ModelAndView("viewpost");
-    }
-
-    @GetMapping("/posts/{username}")
-    public ResponseEntity<?> findUserPosts(@PathVariable("username") String username) {
-        List<Post> posts = postService.postsByUsername(username);
-        return new ResponseEntity(posts, HttpStatus.OK);
-    }
 }
 

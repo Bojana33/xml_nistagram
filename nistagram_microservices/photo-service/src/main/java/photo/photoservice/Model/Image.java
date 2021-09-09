@@ -7,7 +7,8 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Set;
 
 @Getter
@@ -25,7 +26,7 @@ public class Image implements Serializable {
     private String username;
 
     @Column
-    private Date createdAt;
+    private LocalDate createdAt;
 
     @Column
     private String fileName;
@@ -39,7 +40,7 @@ public class Image implements Serializable {
             joinColumns=@JoinColumn(name = "image_id"),
             inverseJoinColumns=@JoinColumn(name = "tag_id")
     )
-    Set<Image> taggedImages;
+    private Set<Tag> tags = new HashSet<>();
 
     @ManyToOne
     @JoinColumn(name="album_fk")

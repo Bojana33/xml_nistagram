@@ -98,7 +98,7 @@ public class UserServiceImpl implements UserService {
     public void followUser(String sender, String receiver) {
         User user = this.userRepository.findByUsername(receiver);
         User senderFollowers = this.userRepository.findByUsername(sender);
-        if (user.getPrivateProfile() == false) {
+        if (!user.getPrivateProfile()) {
             senderFollowers.getFollowers().add(receiver);
             this.userRepository.save(senderFollowers);
             //bidirekciono

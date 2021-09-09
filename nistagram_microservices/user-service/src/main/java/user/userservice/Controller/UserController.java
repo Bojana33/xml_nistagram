@@ -9,6 +9,7 @@ import user.userservice.Model.Request;
 import user.userservice.Model.User;
 import user.userservice.Service.UserService;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -46,6 +47,21 @@ public class UserController {
     @GetMapping(value = "/{username}")
     public ResponseEntity<User> getUser(@PathVariable String username) {
         return new ResponseEntity<>(this.userService.findByUsername(username), HttpStatus.OK);
+    }
+
+    @GetMapping("/{username}/followers/{it}")
+    String getFollower(@PathVariable("username") String username, @PathVariable("it") int ite) {
+        User u = this.userService.findByUsername(username);
+        List<String> followers = new ArrayList<String>(u.getFollowers());
+
+        return followers.get(ite);
+    }
+
+    @GetMapping("/{username}/numOfFollowers")
+    Integer getFollowersNum(@PathVariable("username") String username) {
+        User u = this.userService.findByUsername(username);
+        Integer size = u.getFollowers().size();
+        return size;
     }
 
     @PostMapping(value = "/updateProfile")
@@ -98,12 +114,12 @@ public class UserController {
     }
 
     @GetMapping(value = "{username}/profile/getRequests")
-    public ResponseEntity<Set<Request>> getRequests(@PathVariable String sender) {
+    public ResponseEntity<Set<Request>> getRequests(@PathVariable("username") String sender) {
         return new ResponseEntity<>(this.userService.findByUsername(sender).getReceivedRequests(), HttpStatus.OK);
     }
 
-    @PostMapping(value = "{sender}/profile/{receiver}/follow")
-    public ResponseEntity<String> followUser(@PathVariable String sender, @PathVariable String receiver){
+    @GetMapping(value = "{sender}/profile/{receiver}/follow")
+    public ResponseEntity<String> followUser(@PathVariable("sender") String sender, @PathVariable("receiver") String receiver){
         this.userService.followUser(sender, receiver);
         return new ResponseEntity<>("Request is sent", HttpStatus.OK);
     }
