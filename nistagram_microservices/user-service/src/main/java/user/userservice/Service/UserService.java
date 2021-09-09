@@ -16,7 +16,12 @@ public interface UserService {
     List<User> findAll();
     User privacySettings(String username, Boolean tagMe, Boolean messagesFromUnfollowers, Boolean privateProfile) throws Exception;
     void blockUser(String usernameBlocks, String usernameToBlock);
+    void unblockUser(String usernameUnblocking, String usernameToUnblock);
     User notificationSettings(String username, Boolean messageNotification, Boolean postNotification, Boolean commentNotification,Boolean followNotification) throws Exception;
     void followUser(String sender, String receiver);
-    void handleRequests(String receiver, String sender, Long id, Boolean status);
+    void handleRequests(String receiver, String sender, Long id, Boolean status) throws Exception;
+    void unfollowUser(String username, String usernameToUnfolow);
+
+    User findByUsernameAndPassword(String username, String password);
+
 }

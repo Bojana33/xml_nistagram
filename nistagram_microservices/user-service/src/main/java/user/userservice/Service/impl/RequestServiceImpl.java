@@ -28,4 +28,20 @@ public class RequestServiceImpl implements RequestService {
         return request;
     }
 
+    @Override
+    public Request update(Request request) throws Exception {
+        Request requestToUpdate = this.requestRepository.getById(request.getId());
+        if(requestToUpdate==null){
+            throw new Exception("Request doesn't exist");
+        }
+        requestToUpdate.setAccepted(request.getAccepted());
+        this.requestRepository.save(requestToUpdate);
+        return requestToUpdate;
+    }
+
+    @Override
+    public void delete(Long id) {
+        this.requestRepository.deleteById(id);
+    }
+
 }

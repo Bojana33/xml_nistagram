@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import user.userservice.Model.Request;
 import user.userservice.Model.User;
-import user.userservice.Repository.RequestRepository;
 import user.userservice.Repository.UserRepository;
 import user.userservice.Service.RequestService;
 import user.userservice.Service.UserService;
@@ -16,13 +15,11 @@ public class UserServiceImpl implements UserService {
 
     private UserRepository userRepository;
     private RequestService requestService;
-    private RequestRepository requestRepository;
 
     @Autowired
-    public UserServiceImpl(RequestRepository requestRepository, UserRepository userRepository, RequestService requestService){
+    public UserServiceImpl(UserRepository userRepository, RequestService requestService){
         this.userRepository = userRepository;
         this.requestService = requestService;
-        this.requestRepository = requestRepository;
     }
 
     @Override
@@ -46,7 +43,7 @@ public class UserServiceImpl implements UserService {
         userToUpdate.setPassword(user.getPassword());
         userToUpdate.setPhone(user.getPhone());
         userToUpdate.setUsername(user.getUsername());
-        userToUpdate.setRole(user.getRole());
+        userToUpdate.setUserRole(user.getUserRole());
         userToUpdate.setName(user.getName());
         userToUpdate.setLastname(user.getLastname());
         userToUpdate.setWebsite(user.getWebsite());
@@ -77,8 +74,22 @@ public class UserServiceImpl implements UserService {
     @Override
     public void blockUser(String usernameBlocks, String usernameToBlock) {
         User userBlocks = this.userRepository.findByUsername(usernameBlocks);
+        User userToBlock = this.userRepository.findByUsername(usernameToBlock);
+        if (userBlocks.getFollowers().contains(usernameToBlock)){
+            unfollowUser(usernameBlocks,usernameToBlock);
+        }
+        if (userToBlock.getFollowers().contains(usernameBlocks)){
+            unfollowUser(usernameToBlock,usernameBlocks);
+        }
         userBlocks.getBlockedProfiles().add(usernameToBlock);
         this.userRepository.save(userBlocks);
+    }
+
+    @Override
+    public void unblockUser(String usernameUnblocking, String usernameToUnblock) {
+        User userUnblocking = this.userRepository.findByUsername(usernameUnblocking);
+        userUnblocking.getBlockedProfiles().remove(usernameToUnblock);
+        this.userRepository.save(userUnblocking);
     }
 
     @Override
@@ -114,23 +125,35 @@ public class UserServiceImpl implements UserService {
         this.userRepository.save(user);
     }
 
-    public void handleRequests(String receiver, String sender, Long id, Boolean status) {
+    public void handleRequests(String receiver, String sender, Long id, Boolean status) throws Exception {
         Request request = this.requestService.findOne(id);
         request.setAccepted(status);
         User receiverFollowers = this.userRepository.findByUsername(receiver);
         User senderFollowers = this.userRepository.findByUsername(sender);
-        this.requestRepository.save(request);
+        this.requestService.update(request);
         if (request.getAccepted()) {
             receiverFollowers.getFollowers().add(sender);
-            this.requestRepository.deleteById(id);
+            this.requestService.delete(id);
             this.userRepository.save(receiverFollowers);
             //bidirekciono
             senderFollowers.getFollowers().add(receiver);
             this.userRepository.save(senderFollowers);
         }
         else{
-            this.requestRepository.deleteById(id);
+            this.requestService.delete(id);
         }
+    }
+
+    @Override
+    public void unfollowUser(String username, String usernameToUnfollow) {
+        User userUnfollows = this.userRepository.findByUsername(username);
+        userUnfollows.getFollowers().remove(usernameToUnfollow);
+        this.userRepository.save(userUnfollows);
+    }
+
+    @Override
+    public User findByUsernameAndPassword(String username, String password) {
+        return userRepository.findByUsernameAndPassword(username,password);
     }
 
     @Override

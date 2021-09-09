@@ -1,11 +1,9 @@
 package photo.photoservice.Controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import photo.photoservice.Model.Tag;
 import photo.photoservice.Service.TagService;
 
@@ -22,6 +20,12 @@ public class TagController {
     public ResponseEntity<?> findByName(@PathVariable("name") String name) {
         List<Tag> tags = tagService.findByName(name);
         return ResponseEntity.ok(tags);
+    }
+
+    @GetMapping("/test")
+    public ResponseEntity<String> test(){
+        System.out.println("test");
+        return new ResponseEntity("test",HttpStatus.OK);
     }
 
 }

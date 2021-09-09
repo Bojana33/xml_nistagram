@@ -15,4 +15,6 @@ public interface UserRepository extends JpaRepository<User,Long> {
 
     User save(User user);
 
+    User findByUsernameAndPassword(String username, String password);
+
 }

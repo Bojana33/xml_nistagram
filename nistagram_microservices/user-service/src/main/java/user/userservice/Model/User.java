@@ -7,24 +7,26 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.*;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,property = "id")
+//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,property = "id")
 @Table(name = "users")
 public class User implements Serializable {
         @Id
-        @GeneratedValue(strategy = GenerationType.AUTO)
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
         private Long id;
 
         @Column
         private String username;
 
-        @Column
+        @Column(name = "name_")
         private String name;
 
         @Column
@@ -40,7 +42,7 @@ public class User implements Serializable {
         private Boolean active;
 
         @Column
-        private UserRole role;
+        private UserRole userRole;
 
         @Column
         private String phone;
@@ -84,6 +86,10 @@ public class User implements Serializable {
 
         @OneToMany(mappedBy = "receiver", targetEntity = Request.class)
         private Set<Request> receivedRequests = new HashSet<>();
+
+        @OneToOne(mappedBy = "verification_sender", targetEntity = VerificationRequest.class)
+        //@JoinColumn(name = "verification_request_id", referencedColumnName = "verification_id")
+        private VerificationRequest verificationRequest;
 
         @ElementCollection
         private Set<String> blockedProfiles;
