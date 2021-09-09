@@ -17,11 +17,12 @@ import java.nio.file.Paths;
 @Controller
 public class ImageUploaderController {
 
-    private UserInfoServiceImpl userInfoService;
+    //private UserInfoServiceImpl userInfoService;
 
     @Autowired ImageUploaderController(UserInfoServiceImpl userInfoService) {this.userInfoService = userInfoService;}
 
-    @RequestMapping(value = "getimage/{imageUrl1}/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "getimage/{imageUrl1}/{username}", method = RequestMethod.GET)
+    //@RequestMapping(value = "getimage/{imageUrl1}/{id}", method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity<ByteArrayResource> getImage(@PathVariable("imageUrl1") String imageUrl1, @PathVariable("id") Long id,
                                                       Model modell) throws  Exception{

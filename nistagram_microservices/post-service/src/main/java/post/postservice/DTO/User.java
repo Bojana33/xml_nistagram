@@ -11,29 +11,18 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
 
-@Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,property = "id")
-@Table(name = "users")
-public class User implements Serializable {
+public class User {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-
-    @Column
     private String username;
 
-    @Column
     private String firstname;
 
-    @Column
     private String lastname;
 
-    @Column
     private String phone;
 //
 //    @Column
@@ -43,10 +32,8 @@ public class User implements Serializable {
 //    @DateTimeFormat(pattern = "yyyy-MM-dd")
 //    private Date birthday;
 
-    @Column
     private String biography;
 
-    @Column
     private String website;
 
 //    @Column
@@ -58,8 +45,6 @@ public class User implements Serializable {
 //    @Column
 //    private Boolean deactivated =Boolean.FALSE;
 //
-    @ElementCollection
     private Set<String> followers;
 
-    private Post post;
 }

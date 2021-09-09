@@ -5,7 +5,7 @@
     <title>Home</title>
 </head>
 <body>
-<a href = "/user/registration">Register</a>
+<a th:href="${'localhost:8088/post/' + regUser.username + '/addPost'}">Add post</a>
 <a th:href="${'/user/' + regUser.username + '/profile'}">Profile</a>
 </body>
 </html>
