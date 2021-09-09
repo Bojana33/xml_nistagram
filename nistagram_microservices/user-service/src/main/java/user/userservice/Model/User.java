@@ -16,7 +16,11 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+<<<<<<<<< Temporary merge branch 1
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,property = "id")
+=========
 //@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+>>>>>>>>> Temporary merge branch 2
 @Table(name = "users")
 public class User implements Serializable {
         @Id
@@ -42,7 +46,7 @@ public class User implements Serializable {
         private Boolean active = false;
 
         @Column
-        private UserRole role = UserRole.USER;
+        private UserRole userRole;
 
         @Column
         private String phone;
